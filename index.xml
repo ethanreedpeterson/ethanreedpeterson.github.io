@@ -4,6 +4,25 @@
     <title>Ethan Peterson&#39;s Site</title>
     <link>/</link>
     <description>Recent content on Ethan Peterson&#39;s Site</description>
-    <generator>Hugo -- gohugo.io</generator><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 08 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introducing Myself</title>
+      <link>/2021/10/08/introducing-myself/</link>
+      <pubDate>Fri, 08 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/10/08/introducing-myself/</guid>
+      <description>My name is Ethan Peterson. Born and raised in the small town of Stromsburg, Nebraska, approximately 15 minutes north of York on the prestigious Highway 81. I grew up in love with sports (specifically baseball) and the statistics that come with it. Die hard Yankees, Lakers, and Cornhuskers fan.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
+      
+      <guid>/about/</guid>
+      <description>This is a &amp;ldquo;hello world&amp;rdquo; example website for the blogdown package. The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.</description>
+    </item>
+    
   </channel>
 </rss>

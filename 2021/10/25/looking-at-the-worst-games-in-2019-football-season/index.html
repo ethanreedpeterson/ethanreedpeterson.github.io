@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">4 min read</span>
     
 
     <h1 class="article-title">Looking at the worst games in 2019 football season</h1>
@@ -96,6 +96,66 @@
 <pre><code>## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>First, I need to fix the Result column. Currently, its data is in W/L format and I want separate columns called Outcome and Score using the separate command.</p>
+<pre class="r"><code>badlogs %&gt;% 
+  separate(Result, into=c(&quot;Outcome&quot;, &quot;Score&quot;), sep=&quot; &quot;)</code></pre>
+<pre><code>## # A tibble: 1,662 × 52
+##     Game Date   HomeAway Opponent Outcome Score PassingCmp PassingAtt PassingPct
+##    &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+##  1     1 8/24/… N        Miami (… W       (24-…         17         27       63  
+##  2     2 9/7/19 &lt;NA&gt;     Tenness… W       (45-…         30         36       83.3
+##  3     3 9/14/… @        Kentucky W       (29-…         21         30       70  
+##  4     4 9/21/… &lt;NA&gt;     Tenness… W       (34-…         24         34       70.6
+##  5     5 9/28/… &lt;NA&gt;     Towson   W       (38-…         24         28       85.7
+##  6     6 10/5/… &lt;NA&gt;     Auburn   W       (24-…         25         39       64.1
+##  7     7 10/12… @        Louisia… L       (28-…         24         44       54.5
+##  8     8 10/19… @        South C… W       (38-…         21         33       63.6
+##  9     9 11/2/… N        Georgia  L       (17-…         21         33       63.6
+## 10    10 11/9/… &lt;NA&gt;     Vanderb… W       (56-…         27         40       67.5
+## # … with 1,652 more rows, and 43 more variables: PassingYds &lt;dbl&gt;,
+## #   PassingTD &lt;dbl&gt;, RushingAtt &lt;dbl&gt;, RushingYds &lt;dbl&gt;, RushingAvg &lt;dbl&gt;,
+## #   RushingTD &lt;dbl&gt;, OffensivePlays &lt;dbl&gt;, OffensiveYards &lt;dbl&gt;,
+## #   OffenseAvg &lt;dbl&gt;, FirstDownPass &lt;dbl&gt;, FirstDownRush &lt;dbl&gt;,
+## #   FirstDownPen &lt;dbl&gt;, FirstDownTotal &lt;dbl&gt;, Penalties &lt;dbl&gt;,
+## #   PenaltyYds &lt;dbl&gt;, Fumbles &lt;dbl&gt;, Interceptions &lt;dbl&gt;, TotalTurnovers &lt;dbl&gt;,
+## #   TeamFull &lt;chr&gt;, TeamURL &lt;chr&gt;, DefPassingCmp &lt;dbl&gt;, DefPassingAtt &lt;dbl&gt;, …</code></pre>
+<p>Now that I have the Result column separated out into Outcome and Score, I want to get rid of the parentheses that surround the scores. This is where I’ll use the gsub command.</p>
+<pre class="r"><code>badlogs %&gt;% 
+  separate(Result, into=c(&quot;Outcome&quot;, &quot;Score&quot;), sep=&quot; &quot;) %&gt;%
+  mutate(Score = gsub(&quot;)&quot;, &quot;&quot;, Score, fixed = TRUE)) %&gt;%
+  mutate(Score = gsub(&quot;(&quot;, &quot;&quot;, Score, fixed = TRUE))</code></pre>
+<pre><code>## # A tibble: 1,662 × 52
+##     Game Date   HomeAway Opponent Outcome Score PassingCmp PassingAtt PassingPct
+##    &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+##  1     1 8/24/… N        Miami (… W       24-20         17         27       63  
+##  2     2 9/7/19 &lt;NA&gt;     Tenness… W       45-0          30         36       83.3
+##  3     3 9/14/… @        Kentucky W       29-21         21         30       70  
+##  4     4 9/21/… &lt;NA&gt;     Tenness… W       34-3          24         34       70.6
+##  5     5 9/28/… &lt;NA&gt;     Towson   W       38-0          24         28       85.7
+##  6     6 10/5/… &lt;NA&gt;     Auburn   W       24-13         25         39       64.1
+##  7     7 10/12… @        Louisia… L       28-42         24         44       54.5
+##  8     8 10/19… @        South C… W       38-27         21         33       63.6
+##  9     9 11/2/… N        Georgia  L       17-24         21         33       63.6
+## 10    10 11/9/… &lt;NA&gt;     Vanderb… W       56-0          27         40       67.5
+## # … with 1,652 more rows, and 43 more variables: PassingYds &lt;dbl&gt;,
+## #   PassingTD &lt;dbl&gt;, RushingAtt &lt;dbl&gt;, RushingYds &lt;dbl&gt;, RushingAvg &lt;dbl&gt;,
+## #   RushingTD &lt;dbl&gt;, OffensivePlays &lt;dbl&gt;, OffensiveYards &lt;dbl&gt;,
+## #   OffenseAvg &lt;dbl&gt;, FirstDownPass &lt;dbl&gt;, FirstDownRush &lt;dbl&gt;,
+## #   FirstDownPen &lt;dbl&gt;, FirstDownTotal &lt;dbl&gt;, Penalties &lt;dbl&gt;,
+## #   PenaltyYds &lt;dbl&gt;, Fumbles &lt;dbl&gt;, Interceptions &lt;dbl&gt;, TotalTurnovers &lt;dbl&gt;,
+## #   TeamFull &lt;chr&gt;, TeamURL &lt;chr&gt;, DefPassingCmp &lt;dbl&gt;, DefPassingAtt &lt;dbl&gt;, …</code></pre>
+<p>Looks good. Now, I want to separate the Score column into two columns named TeamScore and OpponentScore. This is also used with the separate command. We’ll rename this to notsobadlogs.</p>
+<pre class="r"><code>badlogs %&gt;% 
+  separate(Result, into=c(&quot;Outcome&quot;, &quot;Score&quot;), sep=&quot; &quot;) %&gt;%
+  mutate(Score = gsub(&quot;)&quot;, &quot;&quot;, Score, fixed = TRUE)) %&gt;%
+  mutate(Score = gsub(&quot;(&quot;, &quot;&quot;, Score, fixed = TRUE)) %&gt;%  
+  separate(Score, into=c(&quot;TeamScore&quot;, &quot;OpponentScore&quot;), sep=&quot;-&quot;) -&gt; notsobadlogs</code></pre>
+<p>Now, for the exciting part, I’m going to look at the worst games in college football. I need to mutate a new field called Differential. This field is taking TeamScore - OpponentScore.</p>
+<pre class="r"><code>badlogs %&gt;%
+  mutate(Differential = TeamScore - OpponentScore)</code></pre>
+<p>Now to create a dataframe called worstgames where the differential is greater than 65 points.</p>
+<pre class="r"><code>worstgames &lt;- badlogs %&gt;%
+  filter(Differential &gt; 65)</code></pre>
 
     </div>
   </article>

@@ -2,6 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>/2021/10/25/a-deeper-look-at-mlb-trends/</loc>
+    <lastmod>2021-10-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/baseball/</loc>
+    <lastmod>2021-10-25T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/categories/</loc>
     <lastmod>2021-10-25T00:00:00+00:00</lastmod>
   </url><url>
@@ -11,10 +17,16 @@
     <loc>/2021/10/25/looking-at-the-worst-games-in-2019-football-season/</loc>
     <lastmod>2021-10-25T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>/tags/mlb/</loc>
+    <lastmod>2021-10-25T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/post/</loc>
     <lastmod>2021-10-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/categories/r/</loc>
+    <lastmod>2021-10-25T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
     <lastmod>2021-10-25T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/2021/10/08/introducing-myself/</loc>
@@ -22,7 +34,5 @@
   </url><url>
     <loc>/about/</loc>
     <lastmod>2016-05-05T21:48:51-07:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
   </url>
 </urlset>

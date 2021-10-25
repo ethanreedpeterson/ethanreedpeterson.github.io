@@ -144,7 +144,7 @@
 ## #   FirstDownPen &lt;dbl&gt;, FirstDownTotal &lt;dbl&gt;, Penalties &lt;dbl&gt;,
 ## #   PenaltyYds &lt;dbl&gt;, Fumbles &lt;dbl&gt;, Interceptions &lt;dbl&gt;, TotalTurnovers &lt;dbl&gt;,
 ## #   TeamFull &lt;chr&gt;, TeamURL &lt;chr&gt;, DefPassingCmp &lt;dbl&gt;, DefPassingAtt &lt;dbl&gt;, …</code></pre>
-<p>Looks good. Now, I want to separate the Score column into two columns named TeamScore and OpponentScore. This is also used with the separate command. After that, we need to mutate the TeamScore and OpponentScore into numerical values. We’ll rename this dataframe to notsobadlogs.</p>
+<p>Looks good. Now, I want to separate the Score column into two columns named TeamScore and OpponentScore. This is also used with the separate command. After that, I need to mutate the TeamScore and OpponentScore into numerical values. I’ll rename this dataframe to notsobadlogs.</p>
 <pre class="r"><code>badlogs %&gt;% 
   separate(Result, into=c(&quot;Outcome&quot;, &quot;Score&quot;), sep=&quot; &quot;) %&gt;%
   mutate(Score = gsub(&quot;)&quot;, &quot;&quot;, Score, fixed = TRUE)) %&gt;%
@@ -153,14 +153,14 @@
 <p>Now, for the exciting part, I’m going to look at the worst games in college football. I need to mutate a new field called Differential. This field is taking TeamScore - OpponentScore.</p>
 <pre class="r"><code>notsobadlogs %&gt;%
   mutate(Differential = TeamScore - OpponentScore) -&gt; notsobadlogs</code></pre>
-<p>Next, I’m creatubg a dataframe called worstgames where the differential is greater than 65 points.</p>
+<p>Next, I’m creating a dataframe called worstgames where the differential is greater than 65 points.</p>
 <pre class="r"><code>worstgames &lt;- notsobadlogs %&gt;%
   filter(Differential &gt; 65)</code></pre>
-<p>Finally let’s create a scatter plot showcasing the worst games with TeamScore on the X axis and OpponentScore on the Y axis. We’re going to add our worstgames data frame in red.</p>
+<p>Finally let’s create a scatter plot showcasing the worst games with TeamScore on the X axis and OpponentScore on the Y axis. I’m going to add our worstgames data frame in red.</p>
 <pre class="r"><code>ggplot() + geom_point(data = notsobadlogs, aes(x = TeamScore, y = OpponentScore), color = &quot;grey&quot;) + 
   geom_point(data = worstgames, aes(x = TeamScore, y = OpponentScore), color = &quot;red&quot;)</code></pre>
 <p><img src="/2021/10/25/looking-at-the-worst-games-in-2019-football-season/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>To circle our worstgames, we need the library called “ggalt”</p>
+<p>To circle our worstgames, I need the library called “ggalt.” After that, I’ll use the code geom_encircle.</p>
 <pre class="r"><code>library(ggalt)</code></pre>
 <pre><code>## Registered S3 methods overwritten by &#39;ggalt&#39;:
 ##   method                  from   

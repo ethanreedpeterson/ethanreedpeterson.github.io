@@ -95,6 +95,14 @@
 <pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>avgattendance &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/avgattendance.csv&quot;)</code></pre>
+<pre><code>## Rows: 119 Columns: 2</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl (1): Year</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>attendance &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/alattendance.csv&quot;)</code></pre>
 <pre><code>## Rows: 1006 Columns: 6</code></pre>
 <pre><code>## ── Column specification ────────────────────────────────────────────────────────
@@ -104,28 +112,6 @@
 <pre><code>## 
 ## ℹ Use `spec()` to retrieve the full column specification for this data.
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>avgattendance &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/avgattendance.csv&quot;)</code></pre>
-<pre><code>## Rows: 119 Columns: 2</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## dbl (1): Year</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<p>There is an extra column in the attendance data frame that I separated into a separate data frame. I have to use the select command to remove it from the first data frame to clean it up.</p>
-<pre class="r"><code>attendance %&gt;%
-  select(Team, Year, Ballpark, GameAverage, SeasonTotal) -&gt; attendance
-
-head(attendance)</code></pre>
-<pre><code>## # A tibble: 6 × 5
-##   Team   Year Ballpark         GameAverage SeasonTotal
-##   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;                  &lt;dbl&gt;       &lt;dbl&gt;
-## 1 BAL    1954 Memorial Stadium       13778     1060910
-## 2 BAL    1955 Memorial Stadium       10924      852039
-## 3 BAL    1956 Memorial Stadium       11704      901201
-## 4 BAL    1957 Memorial Stadium       13371     1029581
-## 5 BAL    1958 Memorial Stadium       10779      829991
-## 6 BAL    1959 Memorial Stadium       11509      891926</code></pre>
 <p>I hope we all can agree that the New York Yankees and Boston Red Sox are a part of the greatest rivalry in all professional sports. So let’s take a look at their rivalry in terms of fan attendance since the very beginning.</p>
 <p>We’re going to filter out the Yankees and Red Sox from the attendance data frame respectively.</p>
 <pre class="r"><code>nyy &lt;- attendance %&gt;%
@@ -163,25 +149,25 @@ bos &lt;- attendance %&gt;%
 <p>One of Boston’s lowpoint in attendance was the late 50s and early 60s, where the team was abysmal. Boston saw a jump in attendance from 2003 to 2013 due to an 820-game sellout streak.</p>
 <p>The Yankees boost in attendance in the 1920s was in part to the Babe Ruth acquisition. Overall baseball attendance seemed to drop off after 1947, when Jackie Robinson broke the color barrier, and TV viewership of baseball games surged in the 50s. The steep climb to peak attendance for the Yankees in the early 2000s is from the announcement of new Yankee Stadium (opening in 2009).</p>
 <p>The next trend I’m looking at is the recent surge in the majors where hitters are trying for more home runs. While this <em>has</em> resulted in a noticeable increase in home runs, strikeouts have also jumped, too. It’s become the big trend: lots of home runs = lots of strikeouts. The 2021 season was no different. I want to look at the current MVP candidates and plot their HR and SO numbers over the season. Do any stand out?</p>
-<p>First, I need to load my libraries.</p>
+<p>First, I need to load my library, baseballr.</p>
+<pre class="r"><code>library(baseballr)</code></pre>
 <pre><code>## Registered S3 method overwritten by &#39;quantmod&#39;:
 ##   method            from
 ##   as.zoo.data.frame zoo</code></pre>
-<p>My data is unique in that it comes from the library, baseballr.</p>
+<p>My data is unique in that it comes from the library we loaded.</p>
 <pre class="r"><code>data21 &lt;- daily_batter_bref(&quot;2021-04-01&quot;, &quot;2021-10-03&quot;)</code></pre>
 <pre><code>## Data courtesy of Baseball-Reference.com. Please consider supporting Baseball-Reference by signing up for a Statehead account: https://stathead.com</code></pre>
-<p>1,006 observations is a lot. I want to narrow it down to a smaller sample. A lot of hitters had little to zero at bats and I don’t want them to clutter my scatter plot.</p>
+<p>1,006 observations is a lot. I want to narrow it down to a smaller sample. Many hitters had little or no at bats and I don’t want them.</p>
 <pre class="r"><code>data21 %&gt;%
-  filter(AB &gt;= 162) -&gt; criteria21
-
-summary(criteria21$AB)</code></pre>
+  filter(AB &gt;= 162) -&gt; criteria21</code></pre>
+<p>I chose 162 AB as my cutoff line because that would be a clean 1 AB per game. But that still leaves too many observations. I’ll take the median AB from the new data frame I created.</p>
+<pre class="r"><code>summary(criteria21$AB)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   162.0   243.5   348.0   369.0   492.2   664.0</code></pre>
-<p>I chose 162 AB as my cutoff line because that would be a clean 1 AB per game. But that still leaves too many observations. I’ll take the median AB from the new data frame I created.</p>
 <pre class="r"><code>criteria21 %&gt;%
   filter(AB &gt;= 348) -&gt; newcriteria21</code></pre>
-<p>193 observations will be perfect – not too little and not too many.
-Next, filter out my 2021 MVP candidates.</p>
+<p>193 observations? Perfect. Not too many, not too little.
+Next, I’ll filter out my 2021 MVP candidates.</p>
 <pre class="r"><code>shohei21 &lt;- newcriteria21 %&gt;% 
   filter(Name == &quot;Shohei Ohtani&quot;)
 vladjr21 &lt;- newcriteria21 %&gt;% 
@@ -196,9 +182,9 @@ harper21 &lt;- newcriteria21 %&gt;%
   filter(Name == &quot;Bryce Harper&quot;)
 tatis21 &lt;- newcriteria21 %&gt;%
   filter(Name == &quot;Fernando Tatis Jr.&quot;)</code></pre>
-<pre><code>##     meanso   meanHR
+<pre><code>##     meanSO   meanHR
 ## 1 114.9793 20.21762</code></pre>
-<p>To create my scatter plot, I’ll plot my new criteria (players w/ AB &gt; 348) with the MVP candidates on top.</p>
+<p>Now let’s see how the MVP candidates did at hitting home runs and striking out.</p>
 <pre class="r"><code>ggplot() + 
   set.seed(1234) +
   geom_point(
@@ -267,23 +253,23 @@ tatis21 &lt;- newcriteria21 %&gt;%
   geom_text(aes(x = 22.2, y = 215), size = 3, label = &quot;Avg. HR&quot;, color = &quot;dodgerblue4&quot;) +
   geom_text(aes(x = 1, y = 110), size = 3, label = &quot;Avg. SO&quot;, color = &quot;dodgerblue4&quot;) +
   labs(
-    title = &quot;MVP candidates: do they fit the current trend?&quot;,
-    subtitle = &quot;Do any 2021 MVP candidates stand out from the \&quot;high HR = high SO\&quot; trend?&quot;,
+    title = &quot;Do the MVP candidates stick out from the current trend?&quot;,
+    subtitle = &quot;Are any contenders following the \&quot;high HR = high SO\&quot; tendency or are they straying from it?&quot;,
     caption = &quot;Source: Baseball-Reference | Graphic by Ethan Peterson&quot;,
     x = &quot;Home runs&quot;,
     y = &quot;Strikeouts&quot;) + 
     theme_minimal() +
   theme(
-    plot.title = element_text(size = 16, face = &quot;bold&quot;),
+    plot.title = element_text(size = 15, face = &quot;bold&quot;),
     axis.title = element_text(size = 9), 
     plot.subtitle = element_text(size = 9), 
     plot.caption = element_text(size = 6, face = &quot;bold.italic&quot;),
     panel.grid.minor = element_blank()
     )</code></pre>
 <p><img src="/2021/10/25/a-deeper-look-at-mlb-trends/index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
-<p>Our finalists are right where they’re expected to be. A couple of players stick out to me. Shohei Ohtani–a two-way player. He struck out the most, but had the second most home runs among MVP candidates, and third overall. Insanely impressive for a generational two-way talent. Vladimir Guerrero Jr., though, is the true standout. Not only is he tied for the most HR, but is also below average in strikeouts. Exactly what you’d want in an MVP. Oh, and he’s only 22.</p>
-<p>My third trend still involves strikeouts. They’ve been increasingly plaguing the league. But a good counter to striking out is walking. How often do our MVP candidates walk? I want to look at their strikeout rate and to their walk rate.
-But first, I’ll mutate a new variable for strikeout rate and walk rate.</p>
+<p>Our finalists are right where they’re expected to be. A couple of players stick out to me. Shohei Ohtani–a two-way player. He struck out the most, but had the second most home runs among MVP candidates, and third overall. Insanely impressive for a generational two-way talent. Vladimir Guerrero Jr., though, is the true standout. He’s tied for the most HR and is below average in strikeouts. Exactly what you like in an MVP. Oh, and he’s only 22 years old.</p>
+<p>My third trend also involves strikeouts. They’ve been on an upward climb since 2005. A good way to circumvent striking out is walking. How often do our candidates walk? I’ll look at their SO rate and their BB rate.
+First, I’ll mutate two new variables for SO rate and BB rate.</p>
 <pre class="r"><code>newcriteria21 %&gt;%                 
   mutate(
     BBrate = ((BB/PA)*100),
@@ -291,7 +277,7 @@ But first, I’ll mutate a new variable for strikeout rate and walk rate.</p>
   ) -&gt; newcriteria21</code></pre>
 <pre><code>##   meankrate meanbbrate
 ## 1  21.09253   8.997398</code></pre>
-<p>Now, I’m going to create a scatter plot with walk rate and strikeout rate with the MVPs plotted on top of the criteria data frame.</p>
+<p>Let’s see how well our contenders do at walking compared to striking out.</p>
 <pre class="r"><code>ggplot() + 
   set.seed(3) +
   geom_point(
@@ -362,11 +348,11 @@ But first, I’ll mutate a new variable for strikeout rate and walk rate.</p>
   geom_text(aes(x = 10.35, y = 39), size = 3, label = &quot;Avg. BB%&quot;, color = &quot;dodgerblue4&quot;) +
   geom_text(aes(x = 0.14, y = 22.4), size = 3, label = &quot;Avg. SO%&quot;, color = &quot;dodgerblue4&quot;) +
   labs(
-    title = &quot;A particular candidate shines when comparing BB% to SO%&quot;,
+    title = &quot;One candidate shines bright when comparing BB% to SO%&quot;,
     subtitle = &quot;Strikeouts are plaguing the league, but 23-year-old Juan Soto doesn&#39;t seem fazed at all.&quot;,
     caption=&quot;Source: Baseball-Reference | Graphic by Ethan Peterson&quot;,
-    x = &quot;Base on balls rate (%)&quot;,
-    y = &quot;Strikeout rate (%)&quot;) + 
+    x = &quot;BB rate (%)&quot;,
+    y = &quot;SO rate (%)&quot;) + 
     theme_minimal() +
   theme(
     plot.title = element_text(size = 15, face = &quot;bold&quot;),
@@ -377,11 +363,11 @@ But first, I’ll mutate a new variable for strikeout rate and walk rate.</p>
     )</code></pre>
 <p><img src="/2021/10/25/a-deeper-look-at-mlb-trends/index_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>Three of our candidates have an above average walk rate and below average strikeout rate. But Juan Soto is the clear elephant in the room. He’s in his own universe. He’s the <em>only</em> player with a walk rate above 20%, and his strikeout rate is near the lowest in the league (among qualifiers). The craziest part is that Juan Soto was <em>only 22 years old</em>. A 22-year-old player having this much plate discipline is extremely rare. There’s a reason he’s in the MVP race.</p>
-<p>The final piece is our Cy Young winners from the 2019 season, Justin Verlander of the Houston Astros and Jacob deGrom of the New York Mets. Both players were phenomenal; each deserved the Cy Young Award. One thing I’m interested in looking at is their ability to limit extra base hits (XBH). What proportion of their hits were XBH compared to singles?</p>
+<p>Lastly, I want to look at the 2019 Cy Young winners: Justin Verlander (HOU) and Jacob deGrom (NYM). Both players were phenomenal; each deserved the Cy Young Award I’m particularly interested in looking at success in limiting extra base hits (XBH). What proportion of their hits were XBH compared to singles?</p>
 <p>I’ll load in our data with baseballr.</p>
 <pre class="r"><code>pitchdata19 &lt;- daily_pitcher_bref(&quot;2019-03-28&quot;, &quot;2019-09-29&quot;)</code></pre>
 <pre><code>## Data courtesy of Baseball-Reference.com. Please consider supporting Baseball-Reference by signing up for a Statehead account: https://stathead.com</code></pre>
-<p>Using a waffle chart, I need the correct library.</p>
+<p>I’ll use a waffle chart.</p>
 <pre class="r"><code>library(waffle)</code></pre>
 <p>Waffle charts like vectors. It’s all about a proportion of the whole. I’m going to look at each players’ four-hit outcomes in the 2019 season. I need to tally up their total hits by hit type.</p>
 <pre class="r"><code>JustinVerlander &lt;- c(&quot;HR&quot; = 36, &quot;3B&quot; = 7, &quot;2B&quot; = 28, &quot;1B&quot; = 66, 17)
@@ -392,7 +378,7 @@ waffle(
         JustinVerlander, 
         rows = 6, 
         colors = c(&quot;#FF6D6A&quot;, &quot;#77DD77&quot;, &quot;#F7DA63&quot;, &quot;#8BD3E6&quot;, &quot;white&quot;)) +
-   labs(title = &quot;The four-hit outcome (4-HO) by the 2019 Cy Young winners&quot;, subtitle=&quot;Interestingly, each pitcher gave up 28 doubles. But the variation between HR and 1B is more interesting.&quot;) + 
+   labs(title = &quot;Which Cy Young winner gave up bigger hits?&quot;, subtitle=&quot;Interestingly, each pitcher gave up 28 doubles. But the variation between HR and 1B is alluring.&quot;) + 
    theme(
     plot.title = element_text(size = 16, face = &quot;bold&quot;),
     plot.subtitle = element_text(size = 10),
@@ -400,7 +386,7 @@ waffle(
 waffle(
         JacobdeGrom, 
         rows = 6, 
-        title = &quot;(NL, below) Jacob deGrom&#39;s 4-HO | (AL, above) Justin Verlander&#39;s 4-HO&quot;,
+        title = &quot;(NL, below) Jacob deGrom&#39;s hits allowed | (AL, above) Justin Verlander&#39;s hits allowed&quot;,
         xlab = &quot;1 square = hit allowed&quot;, 
         colors = c(&quot;#FF6D6A&quot;, &quot;#77DD77&quot;, &quot;#F7DA63&quot;, &quot;#8BD3E6&quot;)) + 
   labs(caption = &quot;Source: Baseball-Reference | Graphic by Ethan Peterson&quot;) +
@@ -411,10 +397,9 @@ waffle(
     plot.caption = element_text(size = 8, face = &quot;bold.italic&quot;))
 )</code></pre>
 <p><img src="/2021/10/25/a-deeper-look-at-mlb-trends/index_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<p>Off the bat (pun intended) it’s quick to see Jacob deGrom gave up 106 singles to Verlander’s 66. But on the flip side, Verlander surrendered 36 home runs (28 solo HR) and deGrom only 19. Both pitchers threw 200+ innings, and coincidentally they ended with the same amount of doubles (28).</p>
-<p>Verlander threw for a league-leading 223 IP; deGrom wasn’t far behind with 204 IP, yet he gave up 17 more hits than Verlander. Looking back at the data frame used, I can cycle through and see different statistics from the season. Both of these pitchers were elite. Verlander’s ERA was only 2.58 and deGrom’s was a dominant 2.43. In terms of ERA, those extra 17 home runs that Verlander surrendered proved to be costly.</p>
-<p>Baseball and it’s trends are fascinating. Finding these trends and being able to find interesting stories inside of them was incredibly enjoyable.</p>
-<p>Baseball won’t ever go away, and nor will their unique and impressive trends.</p>
+<p>Off the bat (pun intended), I notice Jacob deGrom gave up way more singles (106 to 66). But Verlander surrendered 36 home runs (28 of them being solo HR) and deGrom only conceded 19. Both pitchers logged 200+ IP, and coincidentally they both allowed the same number of doubles (28).</p>
+<p>Verlander led the league with 223 IP; deGrom was close behind with 204. But deGrom gave up 17 more hits than Verlander. Looking back at the data frame used, I cycled through the different statistics. Both of these pitchers were elite. Verlander’s ERA was only 2.58 and deGrom’s was a dominant 2.43. In terms of ERA, those extra 17 home runs that Verlander allowed proved to be costly.</p>
+<p>Baseball and it’s trends are fascinating. Finding these trends and being able to find interesting stories inside of them was incredibly enjoyable. Baseball won’t ever go away, and nor will their unique and impressive trends.</p>
 
     </div>
   </article>

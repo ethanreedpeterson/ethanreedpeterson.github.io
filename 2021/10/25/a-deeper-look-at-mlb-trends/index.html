@@ -79,6 +79,7 @@
 <p>Baseball is full of crazy trends. Some are incredibly impressive, like the New York Yankees winning five World Series championships (including four in a row) in the 1930s and six in the 1950s. Some are incredibly abysmal, like the Chicago Cubs’ 108-year drought without a World Series championship from 1908 to 2016.</p>
 <p>In this blog, I’m going to be taking a look at four different types of trends in Major League Baseball and creating data visualizations for us to view using R-Studio. Let’s begin.</p>
 <p>The first trend I want to take a look at is attendance history throughout the MLB, specifically the American League. To start, I’m going to load in our libraries and data.</p>
+<pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
@@ -87,7 +88,9 @@
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(ggrepel)</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
+<pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
 <pre><code>## ✓ tibble  3.1.5     ✓ purrr   0.3.4
 ## ✓ tidyr   1.1.4     ✓ stringr 1.4.0

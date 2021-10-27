@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">13 min read</span>
+    <span class="article-duration">12 min read</span>
     
 
     <h1 class="article-title">A deeper look at MLB trends</h1>
@@ -79,42 +79,12 @@
 <p>Baseball is full of crazy trends. Some are incredibly impressive, like the New York Yankees winning five World Series championships (including four in a row) in the 1930s and six in the 1950s. Some are incredibly abysmal, like the Chicago Cubs’ 108-year drought without a World Series championship from 1908 to 2016.</p>
 <p>In this blog, I’m going to be taking a look at four different types of trends in Major League Baseball and creating data visualizations for us to view using R-Studio. Let’s begin.</p>
 <p>The first trend I want to take a look at is attendance history throughout the MLB, specifically the American League. To start, I’m going to load in our libraries and data.</p>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(ggrepel)</code></pre>
-<pre><code>## Loading required package: ggplot2</code></pre>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
-<pre><code>## ✓ tibble  3.1.5     ✓ purrr   0.3.4
-## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-## ✓ readr   2.0.2     ✓ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>avgattendance &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/avgattendance.csv&quot;)</code></pre>
-<pre><code>## Rows: 119 Columns: 2</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## dbl (1): Year</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>attendance &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/alattendance.csv&quot;)</code></pre>
-<pre><code>## Rows: 1006 Columns: 6</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (2): Team, Ballpark
-## dbl (1): Year</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>library(dplyr)
+library(ggrepel)
+library(tidyverse)</code></pre>
+<pre class="r"><code>avgattendance &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/avgattendance.csv&quot;)
+
+attendance &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/alattendance.csv&quot;)</code></pre>
 <p>I hope we all can agree that the New York Yankees and Boston Red Sox are a part of the greatest rivalry in all professional sports. So let’s take a look at their rivalry in terms of fan attendance since the very beginning.</p>
 <p>I’m going to filter out the Yankees and Red Sox from the attendance data frame respectively.</p>
 <pre class="r"><code>nyy &lt;- attendance %&gt;%
@@ -154,9 +124,6 @@ bos &lt;- attendance %&gt;%
 <p>The next trend I’m looking at is the recent surge in the majors where hitters are trying for more home runs. While this <em>has</em> resulted in a noticeable increase in home runs, strikeouts have also jumped, too. It’s become the big trend: lots of home runs = lots of strikeouts. The 2021 season was no different. I want to look at the current MVP candidates and plot their HR and SO numbers over the season. Do any stand out?</p>
 <p>First, I need to load my library, <code>baseballr</code>.</p>
 <pre class="r"><code>library(baseballr)</code></pre>
-<pre><code>## Registered S3 method overwritten by &#39;quantmod&#39;:
-##   method            from
-##   as.zoo.data.frame zoo</code></pre>
 <p>My data is unique in that it comes from the library we loaded.</p>
 <pre class="r"><code>data21 &lt;- daily_batter_bref(&quot;2021-04-01&quot;, &quot;2021-10-03&quot;)</code></pre>
 <pre><code>## Data courtesy of Baseball-Reference.com. Please consider supporting Baseball-Reference by signing up for a Statehead account: https://stathead.com</code></pre>

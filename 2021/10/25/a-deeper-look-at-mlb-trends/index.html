@@ -136,7 +136,7 @@ bos &lt;- attendance %&gt;%
 <pre class="r"><code>criteria21 %&gt;%
   filter(AB &gt;= 348) -&gt; newcriteria21</code></pre>
 <p>193 observations? Perfect. Not too many, not too little.
-Next, I’ll filter out my 2021 MVP candidates.</p>
+Next, I’ll filter out my 2021 MVP candidates while also getting the mean home run and strikeout numbers for the chart.</p>
 <pre class="r"><code>shohei21 &lt;- newcriteria21 %&gt;% 
   filter(Name == &quot;Shohei Ohtani&quot;)
 vladjr21 &lt;- newcriteria21 %&gt;% 

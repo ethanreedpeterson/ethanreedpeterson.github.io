@@ -119,7 +119,7 @@ bos &lt;- attendance %&gt;%
     )</code></pre>
 <p><img src="/2021/10/25/a-deeper-look-at-mlb-trends/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>Unsurprisingly, its a lot of up and down. The Yankees, as you might expect, are towards the top in attendance in almost every year across the entire league. There may be around 10 years out of the 118-year span where the Red Sox topped the Yankees in attendance.</p>
-<p>One of Boston’s lowpoint in attendance was the late 50s and early 60s, where the team was abysmal. Boston saw a jump in attendance from 2003 to 2013 due to an 820-game sellout streak.</p>
+<p>One of Boston’s low point in attendance was the late 50s and early 60s, where the team was abysmal. Boston saw a jump in attendance from 2003 to 2013 due to an 820-game sellout streak.</p>
 <p>The Yankees boost in attendance in the 1920s was in part to the Babe Ruth acquisition. Overall baseball attendance seemed to drop off after 1947, when Jackie Robinson broke the color barrier, and TV viewership of baseball games surged in the 50s. The steep climb to peak attendance for the Yankees in the early 2000s is from the announcement of new Yankee Stadium (opening in 2009).</p>
 <p>The next trend I’m looking at is the recent surge in the majors where hitters are trying for more home runs. While this <em>has</em> resulted in a noticeable increase in home runs, strikeouts have also jumped, too. It’s become the big trend: lots of home runs = lots of strikeouts. The 2021 season was no different. I want to look at the current MVP candidates and plot their HR and SO numbers over the season. Do any stand out?</p>
 <p>First, I need to load my library, <code>baseballr</code>.</p>
@@ -231,7 +231,7 @@ tatis21 &lt;- newcriteria21 %&gt;%
     theme_minimal() +
   theme(
     plot.title = element_text(size = 15, face = &quot;bold&quot;),
-    axis.title = element_text(size = 9), 
+    axis.title = element_text(size = 8), 
     plot.subtitle = element_text(size = 9), 
     plot.caption = element_text(size = 6, face = &quot;bold.italic&quot;),
     panel.grid.minor = element_blank()
@@ -321,8 +321,8 @@ First, I’ll mutate two new variables for SO rate and BB rate.</p>
     title = &quot;One candidate shines bright when comparing BB% to SO%&quot;,
     subtitle = &quot;Strikeouts are plaguing the league, but 23-year-old Juan Soto doesn&#39;t seem fazed at all.&quot;,
     caption=&quot;Source: Baseball-Reference | Graphic by Ethan Peterson&quot;,
-    x = &quot;BB rate (%)&quot;,
-    y = &quot;SO rate (%)&quot;) + 
+    x = &quot;Walk %&quot;,
+    y = &quot;Strikeout %&quot;) + 
     theme_minimal() +
   theme(
     plot.title = element_text(size = 15, face = &quot;bold&quot;),

@@ -348,7 +348,9 @@ waffle(
         JustinVerlander, 
         rows = 6, 
         colors = c(&quot;#FF6D6A&quot;, &quot;#77DD77&quot;, &quot;#F7DA63&quot;, &quot;#8BD3E6&quot;, &quot;white&quot;)) +
-   labs(title = &quot;Which Cy Young winner gave up bigger hits?&quot;, subtitle=&quot;Interestingly, each pitcher gave up 28 doubles. But the variation between HR and 1B is alluring.&quot;) + 
+   labs(
+     title = &quot;Which Cy Young winner gave up bigger hits?&quot;, 
+     subtitle=&quot;Interestingly, each pitcher gave up 28 doubles. But the variation between HR and 1B is alluring.&quot;) + 
    theme(
     plot.title = element_text(size = 16, face = &quot;bold&quot;),
     plot.subtitle = element_text(size = 10),
@@ -359,7 +361,8 @@ waffle(
         title = &quot;(NL, below) Jacob deGrom&#39;s hits allowed | (AL, above) Justin Verlander&#39;s hits allowed&quot;,
         xlab = &quot;1 square = hit allowed&quot;, 
         colors = c(&quot;#FF6D6A&quot;, &quot;#77DD77&quot;, &quot;#F7DA63&quot;, &quot;#8BD3E6&quot;)) + 
-  labs(caption = &quot;Source: Baseball-Reference | Graphic by Ethan Peterson&quot;) +
+  labs(
+    caption = &quot;Source: Baseball-Reference | Graphic by Ethan Peterson&quot;) +
   theme(
     plot.title = element_text(size = 10, face = &quot;bold&quot;),
     axis.title.x = element_text(size = 8),

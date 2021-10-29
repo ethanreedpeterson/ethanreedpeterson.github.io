@@ -126,7 +126,6 @@ bos &lt;- attendance %&gt;%
 <pre class="r"><code>library(baseballr)</code></pre>
 <p>My data is unique in that it comes from the library we loaded.</p>
 <pre class="r"><code>data21 &lt;- daily_batter_bref(&quot;2021-04-01&quot;, &quot;2021-10-03&quot;)</code></pre>
-<pre><code>## Data courtesy of Baseball-Reference.com. Please consider supporting Baseball-Reference by signing up for a Statehead account: https://stathead.com</code></pre>
 <p>1,006 observations is a lot. I want to narrow it down to a smaller sample. Many hitters had little or no at bats and I don’t want them.</p>
 <pre class="r"><code>data21 %&gt;%
   filter(AB &gt;= 162) -&gt; criteria21</code></pre>
@@ -238,8 +237,8 @@ tatis21 &lt;- newcriteria21 %&gt;%
     )</code></pre>
 <p><img src="/2021/10/25/a-deeper-look-at-mlb-trends/index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>Our finalists are right where they’re expected to be. A couple of players stick out to me. Shohei Ohtani–a two-way player. He struck out the most, but had the second most home runs among MVP candidates, and third overall. Insanely impressive for a generational two-way talent. Vladimir Guerrero Jr., though, is the true standout. He’s tied for the most HR and is below average in strikeouts. Exactly what you like in an MVP. Oh, and he’s <strong>only 22 years old</strong>.</p>
-<p>My third trend also involves strikeouts. They’ve been on an upward climb since 2005. A good way to circumvent striking out is walking. How often do our candidates walk? I’ll look at their SO rate and their BB rate.
-First, I’ll mutate two new variables for SO rate and BB rate.</p>
+<p>My third trend also involves strikeouts. They’ve been on an upward climb since 2005. A good way to circumvent striking out is walking. How often do our candidates walk? I’ll look at their strikeout rate and their walk rate.
+First, I’ll mutate two new variables for SO rate and BB rate. Second, I’ll find the mean of each for an average.</p>
 <pre class="r"><code>newcriteria21 %&gt;%                 
   mutate(
     BBrate = ((BB/PA)*100),
@@ -336,7 +335,6 @@ First, I’ll mutate two new variables for SO rate and BB rate.</p>
 <p>Lastly, I want to look at the 2019 Cy Young winners: Justin Verlander (HOU) and Jacob deGrom (NYM). Both players were phenomenal; each deserved the Cy Young Award I’m particularly interested in looking at success in limiting extra base hits (XBH). What proportion of their hits were XBH compared to singles?</p>
 <p>I’ll load in our data with <code>baseballr</code>.</p>
 <pre class="r"><code>pitchdata19 &lt;- daily_pitcher_bref(&quot;2019-03-28&quot;, &quot;2019-09-29&quot;)</code></pre>
-<pre><code>## Data courtesy of Baseball-Reference.com. Please consider supporting Baseball-Reference by signing up for a Statehead account: https://stathead.com</code></pre>
 <p>I’ll use a waffle chart. To do that, we need to use <code>waffle</code>.</p>
 <pre class="r"><code>library(waffle)</code></pre>
 <p>Waffle charts like vectors. It’s all about a proportion of the whole. I’m going to look at each players’ four-hit outcomes in the 2019 season. I need to tally up their total hits by hit type.</p>

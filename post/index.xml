@@ -12,9 +12,9 @@
       <pubDate>Tue, 30 Nov 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/11/30/three-nba-trends-to-follow/</guid>
-      <description>Loading libraries for the whole project and adding some needless text so it might trigger a build.
-library(tidyverse) library(ggrepel) library(gt) Reading in .csv file, selecting necessary columns, mutating in 3P% column &amp;amp; 3PA column
-threepoint &amp;lt;- read_csv(&amp;quot;~/Desktop/SPMC 350 Files/homework/data/threepointattempts.csv&amp;quot;) ## Rows: 240 Columns: 6 ## ── Column specification ──────────────────────────────────────────────────────── ## Delimiter: &amp;quot;,&amp;quot; ## chr (1): Team ## dbl (5): Season, G, 3P, 3PA, 3Ppct ## ## ℹ Use `spec()` to retrieve the full column specification for this data.</description>
+      <description>Similar to my previous post about the MLB, I wanted to take a turn and bring attention to two interesting trends happening in the NBA today, as well as a peek at Dean Oliver’s “Four Factors of Basketball Success.” The two trends I’ll be visualizing look at the main pillar of basketball today: three-point shooting.
+I’ll begin by loading tidyverse, ggrepel, and gt.
+library(tidyverse) library(ggrepel) library(gt) The first trend I’ll be showcasing is three-point attempts per game by each team.</description>
     </item>
     
     <item>

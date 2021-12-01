@@ -76,29 +76,23 @@
 <script src="/2021/11/30/three-nba-trends-to-follow/index_files/header-attrs/header-attrs.js"></script>
 
 
-<p>Loading libraries for the whole project and adding some needless text so it might trigger a build.</p>
+<p>Similar to my previous post about the MLB, I wanted to take a turn and bring attention to two interesting trends happening in the NBA today, as well as a peek at Dean Oliver’s “Four Factors of Basketball Success.” The two trends I’ll be visualizing look at the main pillar of basketball today: three-point shooting.</p>
+<p>I’ll begin by loading <code>tidyverse</code>, <code>ggrepel</code>, and <code>gt</code>.</p>
 <pre class="r"><code>library(tidyverse)
 library(ggrepel)
 library(gt)</code></pre>
-<p>Reading in .csv file, selecting necessary columns, mutating in 3P% column &amp; 3PA column</p>
+<p>The first trend I’ll be showcasing is three-point attempts per game by each team.
+It’s obvious that the player who catapulted three-point shooting to it’s throne today is Stephen Curry. I’m interested to see how Curry’s voluminous three-point shooting has affected the league since the 2014-15 season (his first ring, thanks to a ridiculous 44% on 8.1 attempts from three).</p>
+<p>I’ll start with loading in our data.</p>
 <pre class="r"><code>threepoint &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/threepointattempts.csv&quot;)</code></pre>
-<pre><code>## Rows: 240 Columns: 6</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (1): Team
-## dbl (5): Season, G, 3P, 3PA, 3Ppct</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>The data itself is your typical team season stats, but I’m only interested in the three-point stats.</p>
+<p>I’ll be mutating two fields. One is <strong>3Ppct</strong>, which I need to multiply by 100 to get to a readable percentage. The other is <strong>3Pgame</strong>, which divides the total three-point attempts by total games so we can get our average 3PA per game.</p>
 <pre class="r"><code>threepoint &lt;- threepoint %&gt;%
   select(Season, Team, G, `3P`, `3PA`, `3Ppct`) %&gt;%
   mutate(
     `3Ppct` = ((`3Ppct`) * 100),
     `3Pgame` = ((`3PA` / G))) -&gt; threepoint </code></pre>
-<p>Removing * from some Team names</p>
-<pre class="r"><code>threepoint %&gt;% 
-  mutate(Team=gsub(&quot;\\*&quot;,&quot;&quot;,Team)) -&gt; threepoint</code></pre>
-<p>Making separate data frame for every team, putting it back into threepoint</p>
+<p>In order to make a line chart featuring every team individually, I’ll make a new data frame called <strong>nba</strong>, then use the <code>%in%</code> operator to filter data that matches that criteria (the new nba data frame).</p>
 <pre class="r"><code>nba &lt;- c(&quot;Golden State Warriors&quot;, &quot;Los Angeles Lakers&quot;, &quot;Los Angeles Clippers&quot;, &quot;Sacramento Kings&quot;, &quot;Phoenix Suns&quot;,
          &quot;Dallas Mavericks&quot;, &quot;Memphis Grizzlies&quot;, &quot;San Antonio Spurs&quot;, &quot;New Orleans Pelicans&quot;, &quot;Houston Rockets&quot;,
          &quot;Utah Jazz&quot;, &quot;Denver Nuggets&quot;, &quot;Portland Trail Blazers&quot;, &quot;Minnesota Timberwolves&quot;, &quot;Oklahoma City Thunder&quot;,
@@ -108,14 +102,17 @@ library(gt)</code></pre>
 
 threepoint &lt;- threepoint %&gt;% 
   filter(Team %in% nba)</code></pre>
-<p>Separate singled-out teams filtered out from threepoint</p>
+<p>With each team’s data now provided, I want to single out three teams in particular.</p>
+<p>The Golden State Warriors, because of their high volume three point shooters in Steph Curry, Klay Thompson, and (for a short stint) Kevin Durant.</p>
+<p>The Houston Rockets, thanks in large part to James Harden and his 11.9 3PA per game during an insane three-year stretch.</p>
+<p>And last but definitely the most important team, the Minnesota Timberwolves… you’ll see why.</p>
 <pre class="r"><code>threepoint %&gt;%
-  filter(Team == &quot;Minnesota Timberwolves&quot;) -&gt; MIN
-threepoint %&gt;%
   filter(Team == &quot;Golden State Warriors&quot;) -&gt; GSW
 threepoint %&gt;%
-  filter(Team == &quot;Houston Rockets&quot;) -&gt; HOU</code></pre>
-<p>3PA line chart</p>
+  filter(Team == &quot;Houston Rockets&quot;) -&gt; HOU
+threepoint %&gt;%
+  filter(Team == &quot;Minnesota Timberwolves&quot;) -&gt; MIN</code></pre>
+<p>Now, let’s chart each team’s 3PA per game from the 2014-15 season to today, including this season’s statistics so far.</p>
 <pre class="r"><code>ggplot() + 
   geom_line(data = threepoint, aes(x = Season, y = `3Pgame`, group = Team), color = &quot;grey&quot;, alpha = 0.2) +
   geom_line(data = GSW, aes(x = Season, y = `3Pgame`, group = Team), color = &quot;#1D428A&quot;, alpha = 0.3, linetype = &quot;twodash&quot;) +
@@ -123,11 +120,11 @@ threepoint %&gt;%
   geom_line(data = MIN, aes(x = Season, y = `3Pgame`, group = Team), color = &quot;#78BE20&quot;, alpha = 1) +
 #Team name labels
   geom_text(aes(x = 2018.5, y = 44.8, fontface = 2), 
-            label = &quot;Rockets&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = 17) +
+            label = &quot;Rockets&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = 16) +
   geom_text(aes(x = 2018.5, y = 32.7, fontface = 2), 
-            label = &quot;Warriors&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 26.8) +
+            label = &quot;Warriors&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 26.5) +
   geom_text(aes(x = 2018.5, y = 26.7, fontface = 2), 
-            label = &quot;Timberwolves&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 30) +
+            label = &quot;Timberwolves&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 29) +
 #2015 3PA rankings labels
   geom_text(aes(x = 2015.2, y = 33.3), label = &quot;1st&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = -9) +
   geom_text(aes(x = 2015.2, y = 26.8), label = &quot;4th&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 25) +
@@ -152,20 +149,13 @@ threepoint %&gt;%
     plot.caption = element_text(size = 8, face = &quot;bold.italic&quot;),
     panel.grid.minor = element_blank()
     )</code></pre>
-<p><img src="/2021/11/30/three-nba-trends-to-follow/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<p>Loading csv file for step chart</p>
+<p><img src="/2021/11/30/three-nba-trends-to-follow/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Woah. The Minnesota Timberwolves are first in the league this season (42.9 3PA per game). Up from LAST in the league in 2014-15 (14.9 3PA per game). That’s a <strong>287% increase</strong>.</p>
+<p>Interestingly enough, the Warriors were only first in the league once, the 2015-16 season. Other than that, they’ve either been near the top or middle of the pack. Losing Klay and Steph in the 2019-20 season visably and understandably hurt their production.</p>
+<p>The Houston Rockets, on the other hand, were first in the league in five out of the eight seasons. Harden’s time in H-town led to an absolutely insane amount of shots taken from behind the arc. The Rockets attempted an unfathomable 45 three-pointers per game in back-to-back seasons. With Harden now gone, their attempts dropped considerably.</p>
+<p>I want to switch gears from team numbers to player numbers. Today’s young players grew up idolizing Steph Curry three-point abilities. 11 rookies have attempted over 400 3-pointers in NBA history. Eight of those rookies’ debut season was after Curry’s (2009-10). The Curry effect? Possibly. We’re going to be focusing on one rookie from this season: Jalen Green, and comparing him to the rest of the rookie top 5 for total 3PA in one season.</p>
 <pre class="r"><code>rookies &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/nbathreepoint.csv&quot;) </code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...6</code></pre>
-<pre><code>## Rows: 402 Columns: 28</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (7): Player, Date, Age, Tm, ...6, Opp, WL
-## dbl (21): G, FG, FGA, FGpct, 3P, 3PA, 3Ppct, FT, FTA, FTpct, ORB, DRB, TRB, ...</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<p>Data frame for top 5 3PA by rookies, including a mutation to add the cumulative sum of 3PM</p>
+<p>The current rookie record is 550 3PA in one season, owned by Utah Jazz guard Donovan Mitchell. As of December 5, 2021, Jalen Green leads all rookies with 115 3PA in 18 games. Can he beat out Mitchell’s record? Is he on pace to?</p>
 <pre class="r"><code>green &lt;- rookies %&gt;%
   filter(Player == &quot;Jalen Green&quot;) %&gt;% 
   group_by(Player) %&gt;% 
@@ -194,28 +184,28 @@ doncic &lt;- rookies %&gt;%
 young &lt;- rookies %&gt;%
   filter(Player == &quot;Trae Young&quot;) %&gt;% 
   mutate(CumThreePoint = cumsum(`3PA`))</code></pre>
-<p>Step chart for cumulative 3PA by rookies, including leading 3PA rookie this season</p>
+<p>Using a step chart, I’ll look at each player’s cumulative 3PA during their rookie season. I’ll see if Jalen Green is truly on pace to beat out the record, albeit we’re only 21 games into the season.</p>
 <pre class="r"><code>ggplot() + 
 #Player cumulative 3PA
-  geom_step(data = mitchell, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#00471B&quot;, alpha = 0.3) +
-  geom_step(data = edwards, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#78BE20&quot;, alpha = 0.3) +
-  geom_step(data = lillard, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#E03A3E&quot;, alpha = 0.3) +
-  geom_step(data = doncic, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#00538C&quot;, alpha = 0.3) +
-  geom_step(data = young, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#C1D32F&quot;, alpha = 0.3) +
+  geom_step(data = mitchell, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#00471B&quot;, alpha = 0.5) +
+  geom_step(data = edwards, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#78BE20&quot;, alpha = 0.5) +
+  geom_step(data = lillard, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#E03A3E&quot;, alpha = 0.5) +
+  geom_step(data = doncic, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#00538C&quot;, alpha = 0.5) +
+  geom_step(data = young, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#C1D32F&quot;, alpha = 0.5) +
   geom_step(data = green, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#CE1141&quot;, alpha = 1) +
 #Player labels  
   geom_text(aes(x = 11.6, y = 100), label = &quot;Jalen Green&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 1, angle = 25) +
-  geom_text(aes(x = 78.5, y = 560), label = &quot;Donovan Mitchell&quot;, color = &quot;#00471B&quot;, size = 3, alpha = 0.4) +
+  geom_text(aes(x = 78.5, y = 560), label = &quot;Donovan Mitchell&quot;, color = &quot;#00471B&quot;, size = 3, alpha = 0.6) +
   geom_text(aes(x = 35, y = 160), label = &quot;Trae Young&quot;, color = &quot;#C1D32F&quot;, size = 3, alpha = 0.6, angle = 10) +
-  geom_text(aes(x = 46, y = 330), label = &quot;Anthony Edwards&quot;, color = &quot;#78BE20&quot;, size = 3, alpha = 0.4, angle = 30) +
-  geom_text(aes(x = 75, y = 475), label = &quot;Damian Lillard&quot;, color = &quot;#E03A3E&quot;, size = 3, alpha = 0.4, angle = 20) +
-  geom_text(aes(x = 62, y = 460), label = &quot;Luka Dončić&quot;, color = &quot;#00538C&quot;, size = 3, alpha = 0.4, angle = 30) +
+  geom_text(aes(x = 46, y = 330), label = &quot;Anthony Edwards&quot;, color = &quot;#78BE20&quot;, size = 3, alpha = 0.6, angle = 30) +
+  geom_text(aes(x = 75, y = 475), label = &quot;Damian Lillard&quot;, color = &quot;#E03A3E&quot;, size = 3, alpha = 0.6, angle = 26) +
+  geom_text(aes(x = 62, y = 460), label = &quot;Luka Dončić&quot;, color = &quot;#00538C&quot;, size = 3, alpha = 0.6, angle = 30) +
   theme_minimal() +
   scale_y_continuous(breaks = seq(0,500, by = 100)) +
   scale_x_continuous(breaks = seq(0,90, by = 10)) +
   labs(
-    title = &quot;Rookie 3PA record to be eclipsed?&quot;,
-    subtitle = &quot;Rockets guard, Jalen Green, is on pace to attempt the most threes by a rookie in NBA history.&quot;,
+    title = &quot;Rookie 3-point attempt record to be eclipsed?&quot;,
+    subtitle = &quot;Rockets guard Jalen Green is on pace to attempt the most threes by a rookie in NBA history.&quot;,
     caption=&quot;Source: Basketball-Reference | By Ethan Peterson&quot;,
     x = &quot;Games Played&quot;,
     y = &quot;3PA&quot;) +
@@ -226,28 +216,17 @@ young &lt;- rookies %&gt;%
     plot.caption = element_text(size = 8, face = &quot;bold.italic&quot;),
     panel.grid.minor = element_blank()
     )</code></pre>
-<p><img src="/2021/11/30/three-nba-trends-to-follow/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
-<p>Loading champs data and selecting necessary columns</p>
-<pre class="r"><code>champs &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/champs.csv&quot;)</code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...14
-## * `` -&gt; ...15
-## * `` -&gt; ...16
-## * `` -&gt; ...17
-## * `` -&gt; ...18
-## * ...</code></pre>
-<pre><code>## Rows: 42 Columns: 37</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (2): Season, Team
-## dbl (11): W, L, Pct, eFG%, TOV%, ORB%, FT_FGA, OppeFG%, OppTOV%, OppORB%, Op...
-## lgl (24): ...14, ...15, ...16, ...17, ...18, ...19, ...20, ...21, ...22, ......</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>champs &lt;- champs %&gt;%
+<p><img src="/2021/11/30/three-nba-trends-to-follow/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>By looking at this graph, Jalen Green seems on pace to break (or nearly break) the rookie 3PA record. His 3-point percentage is lackluster, though (an abysmal 28%). The current top 5 rookies all shot above 32%.</p>
+<p>Lastly, I’ll be looking at something other than 3-point shooting. How do basketball teams win games? <a href="https://www.basketball-reference.com/about/factors.html">Dean Oliver</a> identified what he called the “Four Factors of Basketball Success.” Shooting, turnovers, rebounding, and free throws. He weighted them in order of importance: shooting = 40%, turnovers = 25%, rebounding = 20%, and free throws = 15%.</p>
+<p>Shooting is measured with Effective Field Goal Percentage (eFG%), turnovers are measured using Turnover Percentage (TOV%), rebounding with Offensive and Defensive Rebound Percentage (ORB% and DRB%), and free throws by how often a team gets to the line and how often they make them, using Free Throws per Field Goal Attempt (FT/FGA).</p>
+<p>Because basketball is an offensive and defensive game, Dean Oliver’s theory can have up to eight factors. First, I’ll load in our data, which is every NBA championship team since the 1979-80 season (when TOV% was first used) and their season stats. Then, I’ll select the necessary columns.</p>
+<pre class="r"><code>champs &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/champs.csv&quot;)
+
+champs &lt;- champs %&gt;%
   select(Season, Team, W, L, Pct, `eFG%`, `TOV%`, `ORB%`, FT_FGA, `OppeFG%`, `OppTOV%`, `OppORB%`, OppFT_FGA)</code></pre>
-<p>Mutating columns so each pct is on a 100 point scale and finding net values for these for Four Factor Score table</p>
+<p>I want to make a readable table to showcase the top 10 championship teams based on Dean Oliver’s success factors. With the data I have, I need to multiply the eight factors by 100 so I have a readable percentage. Then, I’ll mutate a net value for each category (Net eFG%, Net TOV%, Net ORB%, and Net FT_FGA). This is so we can accurately see if the teams out-performed their opponents in each category.
+Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, which takes each net value and multiplies it by its respective weight that Oliver listed, and then adding them together.</p>
 <pre class="r"><code>champs %&gt;%
   mutate(
     `eFG%` = (`eFG%` * 100),           #shifting decimal point so its on a 1-100 scale
@@ -258,18 +237,19 @@ young &lt;- rookies %&gt;%
     `OppORB%` = (`OppORB%` * 100),
      FT_FGA = (FT_FGA * 100),
      OppFT_FGA = (OppFT_FGA * 100), 
-    `Net_eFG%` = (`eFG%` - `OppeFG%`),      #Net values of the different four factors
+    `Net_eFG%` = (`eFG%` - `OppeFG%`),      #Net values of each factor
     `Net_TOV%` = (`OppTOV%` - `TOV%`),
     `Net_ORB%` = (`ORB%` - `OppORB%`),
      Net_FT_FGA = (FT_FGA - OppFT_FGA),
      FourFactorScore = (`Net_eFG%` * .40) + (`Net_TOV%` * .25) + (`Net_ORB%` * .20) + (Net_FT_FGA * .15)) -&gt; champsstats</code></pre>
-<p>Selecting necessary columns and newly mutated Net columns and making new data frame</p>
+<p>Finally, I’ll select the necessary columns for the table.</p>
 <pre class="r"><code>champsstats %&gt;% 
   select(Season, Team, W, L, Pct, `Net_eFG%`, `Net_TOV%`, `Net_ORB%`, Net_FT_FGA, FourFactorScore) -&gt; champstable</code></pre>
-<p>Four Factor Score table</p>
+<p>Let’s see which NBA champion fit Dean Oliver’s model the best.</p>
 <pre class="r"><code>champstable %&gt;%
   group_by() %&gt;%
-  arrange(desc(FourFactorScore)) %&gt;%
+  arrange(desc(FourFactorScore)) %&gt;% 
+  top_n(10) %&gt;%
   gt() %&gt;%
   cols_label(
     `Net_eFG%` = &quot;Net eFG%&quot;,
@@ -284,7 +264,7 @@ young &lt;- rookies %&gt;%
     ) %&gt;%
   tab_header(
     title = &quot;Which NBA champion excelled at the \&quot;Four Factors of Basketball Success?\&quot;&quot;,
-    subtitle = &quot;What crowned club fits Dean Oliver&#39;s bill for basketball success the best?&quot;
+    subtitle = &quot;The Chicago Bulls are a prime example of proof for Dean Oliver&#39;s theory for success.&quot;
   ) %&gt;% tab_style(
     style = cell_text(color = &quot;black&quot;, weight = &quot;bold&quot;, align = &quot;left&quot;),
     locations = cells_title(&quot;title&quot;)
@@ -339,7 +319,7 @@ young &lt;- rookies %&gt;%
     ),
     locations = list(
       cells_body(
-        rows = c(42)))
+        rows = c(10)))
   ) %&gt;% 
     fmt_number(
     columns = c(FourFactorScore),
@@ -360,7 +340,7 @@ young &lt;- rookies %&gt;%
       ),
     locations = cells_body(
       columns = `Net_TOV%`,
-      rows = c(37)
+      rows = c(1)
     )
   ) %&gt;%
   tab_style(
@@ -378,7 +358,7 @@ young &lt;- rookies %&gt;%
       ),
     locations = cells_body(
       columns = Net_FT_FGA,
-      rows = c(22)
+      rows = c(5)
     )
   ) %&gt;%
 #Adding Team colors and fills
@@ -423,62 +403,14 @@ young &lt;- rookies %&gt;%
       ),
     locations = cells_body(
       rows = Team == &quot;Golden State Warriors&quot;)
-    ) %&gt;%
-  tab_style(
-    style = list(
-      cell_text(color = &quot;#1D42BA&quot;)
-      ),
-    locations = cells_body(
-      rows = Team == &quot;Detroit Pistons&quot;)
-    ) %&gt;%
-  tab_style(
-    style = list(
-      cell_text(color = &quot;#98002E&quot;)
-      ),
-    locations = cells_body(
-      rows = Team == &quot;Miami Heat&quot;)
-    ) %&gt;%
-  tab_style(
-    style = list(
-      cell_text(color = &quot;#00471B&quot;)
-      ),
-    locations = cells_body(
-      rows = Team == &quot;Milwuakee Bucks&quot;)
-    ) %&gt;%
-  tab_style(
-    style = list(
-      cell_text(color = &quot;#860038&quot;)
-      ),
-    locations = cells_body(
-      rows = Team == &quot;Cleveland Cavaliers&quot;)
-    ) %&gt;%
-  tab_style(
-    style = list(
-      cell_text(color = &quot;#CE1141&quot;)
-      ),
-    locations = cells_body(
-      rows = Team == &quot;Houston Rockets&quot;)
-    )  %&gt;%
-  tab_style(
-    style = list(
-      cell_text(color = &quot;#00538C&quot;)
-      ),
-    locations = cells_body(
-      rows = Team == &quot;Dallas Mavericks&quot;)
-    ) %&gt;%
-  tab_style(
-    style = list(
-      cell_text(color = &quot;#CE1141&quot;)
-    ),
-    locations = cells_body(
-      rows = Team == &quot;Toronto Raptors&quot;)
-    )</code></pre>
-<div id="mlufogacrl" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+    ) </code></pre>
+<pre><code>## Selecting by FourFactorScore</code></pre>
+<div id="inadzxhcgz" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#mlufogacrl .gt_table {
+#inadzxhcgz .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -503,7 +435,7 @@ young &lt;- rookies %&gt;%
   border-left-color: #D3D3D3;
 }
 
-#mlufogacrl .gt_heading {
+#inadzxhcgz .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -515,7 +447,7 @@ young &lt;- rookies %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#mlufogacrl .gt_title {
+#inadzxhcgz .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -525,7 +457,7 @@ young &lt;- rookies %&gt;%
   border-bottom-width: 0;
 }
 
-#mlufogacrl .gt_subtitle {
+#inadzxhcgz .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -535,13 +467,13 @@ young &lt;- rookies %&gt;%
   border-top-width: 0;
 }
 
-#mlufogacrl .gt_bottom_border {
+#inadzxhcgz .gt_bottom_border {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mlufogacrl .gt_col_headings {
+#inadzxhcgz .gt_col_headings {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -556,7 +488,7 @@ young &lt;- rookies %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#mlufogacrl .gt_col_heading {
+#inadzxhcgz .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -576,7 +508,7 @@ young &lt;- rookies %&gt;%
   overflow-x: hidden;
 }
 
-#mlufogacrl .gt_column_spanner_outer {
+#inadzxhcgz .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -588,15 +520,15 @@ young &lt;- rookies %&gt;%
   padding-right: 4px;
 }
 
-#mlufogacrl .gt_column_spanner_outer:first-child {
+#inadzxhcgz .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mlufogacrl .gt_column_spanner_outer:last-child {
+#inadzxhcgz .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mlufogacrl .gt_column_spanner {
+#inadzxhcgz .gt_column_spanner {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -608,7 +540,7 @@ young &lt;- rookies %&gt;%
   width: 100%;
 }
 
-#mlufogacrl .gt_group_heading {
+#inadzxhcgz .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -630,7 +562,7 @@ young &lt;- rookies %&gt;%
   vertical-align: middle;
 }
 
-#mlufogacrl .gt_empty_group_heading {
+#inadzxhcgz .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -645,15 +577,15 @@ young &lt;- rookies %&gt;%
   vertical-align: middle;
 }
 
-#mlufogacrl .gt_from_md > :first-child {
+#inadzxhcgz .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mlufogacrl .gt_from_md > :last-child {
+#inadzxhcgz .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mlufogacrl .gt_row {
+#inadzxhcgz .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -672,7 +604,7 @@ young &lt;- rookies %&gt;%
   overflow-x: hidden;
 }
 
-#mlufogacrl .gt_stub {
+#inadzxhcgz .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -684,7 +616,7 @@ young &lt;- rookies %&gt;%
   padding-left: 12px;
 }
 
-#mlufogacrl .gt_summary_row {
+#inadzxhcgz .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -694,7 +626,7 @@ young &lt;- rookies %&gt;%
   padding-right: 5px;
 }
 
-#mlufogacrl .gt_first_summary_row {
+#inadzxhcgz .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -704,7 +636,7 @@ young &lt;- rookies %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#mlufogacrl .gt_grand_summary_row {
+#inadzxhcgz .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -714,7 +646,7 @@ young &lt;- rookies %&gt;%
   padding-right: 5px;
 }
 
-#mlufogacrl .gt_first_grand_summary_row {
+#inadzxhcgz .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -724,11 +656,11 @@ young &lt;- rookies %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#mlufogacrl .gt_striped {
+#inadzxhcgz .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mlufogacrl .gt_table_body {
+#inadzxhcgz .gt_table_body {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -737,7 +669,7 @@ young &lt;- rookies %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#mlufogacrl .gt_footnotes {
+#inadzxhcgz .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -751,13 +683,13 @@ young &lt;- rookies %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#mlufogacrl .gt_footnote {
+#inadzxhcgz .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#mlufogacrl .gt_sourcenotes {
+#inadzxhcgz .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -771,41 +703,41 @@ young &lt;- rookies %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#mlufogacrl .gt_sourcenote {
+#inadzxhcgz .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#mlufogacrl .gt_left {
+#inadzxhcgz .gt_left {
   text-align: left;
 }
 
-#mlufogacrl .gt_center {
+#inadzxhcgz .gt_center {
   text-align: center;
 }
 
-#mlufogacrl .gt_right {
+#inadzxhcgz .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mlufogacrl .gt_font_normal {
+#inadzxhcgz .gt_font_normal {
   font-weight: normal;
 }
 
-#mlufogacrl .gt_font_bold {
+#inadzxhcgz .gt_font_bold {
   font-weight: bold;
 }
 
-#mlufogacrl .gt_font_italic {
+#inadzxhcgz .gt_font_italic {
   font-style: italic;
 }
 
-#mlufogacrl .gt_super {
+#inadzxhcgz .gt_super {
   font-size: 65%;
 }
 
-#mlufogacrl .gt_footnote_marks {
+#inadzxhcgz .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -817,7 +749,7 @@ young &lt;- rookies %&gt;%
       <th colspan="10" class="gt_heading gt_title gt_font_normal" style="color: #000000; text-align: left; font-weight: bold;">Which NBA champion excelled at the "Four Factors of Basketball Success?"</th>
     </tr>
     <tr>
-      <th colspan="10" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="color: #000000; text-align: left;">What crowned club fits Dean Oliver's bill for basketball success the best?</th>
+      <th colspan="10" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="color: #000000; text-align: left;">The Chicago Bulls are a prime example of proof for Dean Oliver's theory for success.</th>
     </tr>
   </thead>
   <thead class="gt_col_headings">
@@ -841,7 +773,7 @@ young &lt;- rookies %&gt;%
 <td class="gt_row gt_center" style="color: #CE1141;">10</td>
 <td class="gt_row gt_center" style="color: #CE1141;">0.878</td>
 <td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">3.5</td>
-<td class="gt_row gt_center" style="color: #CE1141;">3.0</td>
+<td class="gt_row gt_center" style="font-style: oblique; font-weight: bolder; color: #CE1141;">3.0</td>
 <td class="gt_row gt_center" style="font-style: oblique; font-weight: bolder; color: #CE1141;">8.0</td>
 <td class="gt_row gt_center" style="color: #CE1141;">-0.5</td>
 <td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #CE1141;">3.68</td></tr>
@@ -883,7 +815,7 @@ young &lt;- rookies %&gt;%
 <td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">5.6</td>
 <td class="gt_row gt_center" style="color: #000000;">-0.8</td>
 <td class="gt_row gt_center" style="color: #000000;">-0.1</td>
-<td class="gt_row gt_center" style="color: #000000;">6.1</td>
+<td class="gt_row gt_center" style="font-style: oblique; font-weight: bolder; color: #000000;">6.1</td>
 <td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #000000;">2.94</td></tr>
     <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #006BB6;">1982-83</td>
 <td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #006BB6;">Philadelphia 76ers</td>
@@ -925,336 +857,16 @@ young &lt;- rookies %&gt;%
 <td class="gt_row gt_center" style="color: #007A33;">3.0</td>
 <td class="gt_row gt_center" style="color: #007A33;">2.8</td>
 <td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #007A33;">2.83</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #FFC72C;">2016-17</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #FFC72C;">Golden State Warriors</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #FFC72C;">67</td>
-<td class="gt_row gt_center gt_striped" style="color: #FFC72C;">15</td>
-<td class="gt_row gt_center gt_striped" style="color: #FFC72C;">0.817</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; font-style: oblique; font-weight: bolder; color: #FFC72C;">7.7</td>
-<td class="gt_row gt_center gt_striped" style="color: #FFC72C;">0.3</td>
-<td class="gt_row gt_center gt_striped" style="color: #FFC72C;">-2.3</td>
-<td class="gt_row gt_center gt_striped" style="color: #FFC72C;">0.6</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #FFC72C;">2.78</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">1990-91</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">Chicago Bulls</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">61</td>
-<td class="gt_row gt_center" style="color: #CE1141;">21</td>
-<td class="gt_row gt_center" style="color: #CE1141;">0.744</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">3.3</td>
-<td class="gt_row gt_center" style="color: #CE1141;">2.5</td>
-<td class="gt_row gt_center" style="color: #CE1141;">3.5</td>
-<td class="gt_row gt_center" style="color: #CE1141;">-0.1</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #CE1141;">2.63</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">2006-07</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">San Antonio Spurs</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">58</td>
-<td class="gt_row gt_center gt_striped" style="color: #000000;">24</td>
-<td class="gt_row gt_center gt_striped" style="color: #000000;">0.707</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">5.0</td>
-<td class="gt_row gt_center gt_striped" style="color: #000000;">0.4</td>
-<td class="gt_row gt_center gt_striped" style="color: #000000;">-0.1</td>
-<td class="gt_row gt_center gt_striped" style="color: #000000;">3.4</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #000000;">2.59</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">1984-85</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">Los Angeles Lakers</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">62</td>
-<td class="gt_row gt_center" style="color: #552583;">20</td>
-<td class="gt_row gt_center" style="color: #552583;">0.756</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">6.6</td>
-<td class="gt_row gt_center" style="color: #552583;">-2.0</td>
-<td class="gt_row gt_center" style="color: #552583;">0.9</td>
-<td class="gt_row gt_center" style="color: #552583;">1.5</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #552583;">2.55</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">2004-05</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">San Antonio Spurs</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">59</td>
-<td class="gt_row gt_center gt_striped" style="color: #000000;">23</td>
-<td class="gt_row gt_center gt_striped" style="color: #000000;">0.720</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">4.0</td>
-<td class="gt_row gt_center gt_striped" style="color: #000000;">1.5</td>
-<td class="gt_row gt_center gt_striped" style="color: #000000;">2.7</td>
-<td class="gt_row gt_center gt_striped" style="color: #000000;">0.2</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #000000;">2.54</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">2002-03</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">San Antonio Spurs</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">60</td>
-<td class="gt_row gt_center" style="color: #000000;">22</td>
-<td class="gt_row gt_center" style="color: #000000;">0.731</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">4.4</td>
-<td class="gt_row gt_center" style="color: #000000;">-0.9</td>
-<td class="gt_row gt_center" style="color: #000000;">0.1</td>
-<td class="gt_row gt_center" style="color: #000000;">5.4</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #000000;">2.36</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">1983-84</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">Boston Celtics</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">62</td>
-<td class="gt_row gt_center gt_striped" style="color: #007A33;">20</td>
-<td class="gt_row gt_center gt_striped" style="color: #007A33;">0.756</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">2.9</td>
-<td class="gt_row gt_center gt_striped" style="color: #007A33;">-0.8</td>
-<td class="gt_row gt_center gt_striped" style="color: #007A33;">3.9</td>
-<td class="gt_row gt_center gt_striped" style="color: #007A33;">3.9</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #007A33;">2.33</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #FFC72C;">2014-15</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #FFC72C;">Golden State Warriors</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #FFC72C;">67</td>
-<td class="gt_row gt_center" style="color: #FFC72C;">15</td>
-<td class="gt_row gt_center" style="color: #FFC72C;">0.817</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #FFC72C;">7.0</td>
-<td class="gt_row gt_center" style="color: #FFC72C;">1.2</td>
-<td class="gt_row gt_center" style="color: #FFC72C;">-1.4</td>
-<td class="gt_row gt_center" style="color: #FFC72C;">-3.3</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #FFC72C;">2.32</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">1988-89</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">Detroit Pistons</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">63</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">19</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">0.759</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">4.4</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">-1.2</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">3.7</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">0.6</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #1D42BA;">2.29</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">2012-13</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">Miami Heat</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">66</td>
-<td class="gt_row gt_center" style="color: #98002E;">16</td>
-<td class="gt_row gt_center" style="color: #98002E;">0.805</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">6.5</td>
-<td class="gt_row gt_center" style="color: #98002E;">1.1</td>
-<td class="gt_row gt_center" style="color: #98002E;">-4.8</td>
-<td class="gt_row gt_center" style="color: #98002E;">2.4</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #98002E;">2.28</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">1997-98</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">Chicago Bulls</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">62</td>
-<td class="gt_row gt_center gt_striped" style="color: #CE1141;">20</td>
-<td class="gt_row gt_center gt_striped" style="color: #CE1141;">0.756</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">1.6</td>
-<td class="gt_row gt_center gt_striped" style="color: #CE1141;">1.4</td>
-<td class="gt_row gt_center gt_striped" style="color: #CE1141;">6.3</td>
-<td class="gt_row gt_center gt_striped" style="color: #CE1141;">-0.1</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #CE1141;">2.23</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">2008-09</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">Los Angeles Lakers</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">65</td>
-<td class="gt_row gt_center" style="color: #552583;">17</td>
-<td class="gt_row gt_center" style="color: #552583;">0.793</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">2.3</td>
-<td class="gt_row gt_center" style="color: #552583;">1.9</td>
-<td class="gt_row gt_center" style="color: #552583;">2.4</td>
-<td class="gt_row gt_center" style="color: #552583;">1.7</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #552583;">2.13</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">1987-88</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">Los Angeles Lakers</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">62</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">20</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">0.756</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">3.1</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">-0.9</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">0.2</td>
-<td class="gt_row gt_center gt_striped" style="font-style: oblique; font-weight: bolder; color: #552583;">7.0</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #552583;">2.11</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">1979-80</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">Los Angeles Lakers</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">60</td>
-<td class="gt_row gt_center" style="color: #552583;">22</td>
-<td class="gt_row gt_center" style="color: #552583;">0.731</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">5.5</td>
-<td class="gt_row gt_center" style="color: #552583;">-2.5</td>
-<td class="gt_row gt_center" style="color: #552583;">-0.5</td>
-<td class="gt_row gt_center" style="color: #552583;">3.9</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #552583;">2.06</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">2003-04</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">Detroit Pistons</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">54</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">28</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">0.659</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">2.0</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">0.8</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">1.9</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">4.5</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #1D42BA;">2.06</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">2011-12</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">Miami Heat</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">46</td>
-<td class="gt_row gt_center" style="color: #98002E;">20</td>
-<td class="gt_row gt_center" style="color: #98002E;">0.697</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">2.6</td>
-<td class="gt_row gt_center" style="color: #98002E;">1.3</td>
-<td class="gt_row gt_center" style="color: #98002E;">0.5</td>
-<td class="gt_row gt_center" style="color: #98002E;">3.8</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #98002E;">2.04</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">2001-02</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">Los Angeles Lakers</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">58</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">24</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">0.707</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">4.5</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">1.2</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">0.8</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">-1.5</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #552583;">2.03</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">1980-81</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">Boston Celtics</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">62</td>
-<td class="gt_row gt_center" style="color: #007A33;">20</td>
-<td class="gt_row gt_center" style="color: #007A33;">0.756</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">4.5</td>
-<td class="gt_row gt_center" style="color: #007A33;">-1.1</td>
-<td class="gt_row gt_center" style="color: #007A33;">1.7</td>
-<td class="gt_row gt_center" style="color: #007A33;">1.1</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #007A33;">2.03</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #00471B;">2020-21</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #00471B;">Milwuakee Bucks</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #00471B;">46</td>
-<td class="gt_row gt_center gt_striped" style="color: #00471B;">26</td>
-<td class="gt_row gt_center gt_striped" style="color: #00471B;">0.639</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #00471B;">3.0</td>
-<td class="gt_row gt_center gt_striped" style="color: #00471B;">-0.5</td>
-<td class="gt_row gt_center gt_striped" style="color: #00471B;">3.0</td>
-<td class="gt_row gt_center gt_striped" style="color: #00471B;">2.0</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #00471B;">1.97</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">2013-14</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">San Antonio Spurs</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">62</td>
-<td class="gt_row gt_center" style="color: #000000;">20</td>
-<td class="gt_row gt_center" style="color: #000000;">0.756</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">5.5</td>
-<td class="gt_row gt_center" style="color: #000000;">-0.7</td>
-<td class="gt_row gt_center" style="color: #000000;">-0.9</td>
-<td class="gt_row gt_center" style="color: #000000;">0.4</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #000000;">1.91</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">2005-06</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">Miami Heat</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">52</td>
-<td class="gt_row gt_center gt_striped" style="color: #98002E;">30</td>
-<td class="gt_row gt_center gt_striped" style="color: #98002E;">0.634</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #98002E;">4.0</td>
-<td class="gt_row gt_center gt_striped" style="color: #98002E;">-1.5</td>
-<td class="gt_row gt_center gt_striped" style="color: #98002E;">3.1</td>
-<td class="gt_row gt_center gt_striped" style="color: #98002E;">0.3</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #98002E;">1.89</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">2019-20</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">Los Angeles Lakers</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">52</td>
-<td class="gt_row gt_center" style="color: #552583;">19</td>
-<td class="gt_row gt_center" style="color: #552583;">0.732</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">2.7</td>
-<td class="gt_row gt_center" style="color: #552583;">0.8</td>
-<td class="gt_row gt_center" style="color: #552583;">3.3</td>
-<td class="gt_row gt_center" style="color: #552583;">-0.4</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #552583;">1.88</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">1989-90</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">Detroit Pistons</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">59</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">23</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">0.720</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #1D42BA;">2.9</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">0.3</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">4.5</td>
-<td class="gt_row gt_center gt_striped" style="color: #1D42BA;">-1.7</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #1D42BA;">1.88</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #FFC72C;">2017-18</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #FFC72C;">Golden State Warriors</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #FFC72C;">58</td>
-<td class="gt_row gt_center" style="color: #FFC72C;">24</td>
-<td class="gt_row gt_center" style="color: #FFC72C;">0.707</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #FFC72C;">6.5</td>
-<td class="gt_row gt_center" style="color: #FFC72C;">-1.5</td>
-<td class="gt_row gt_center" style="color: #FFC72C;">-2.7</td>
-<td class="gt_row gt_center" style="color: #FFC72C;">0.9</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #FFC72C;">1.82</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">2000-01</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">Los Angeles Lakers</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">56</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">26</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">0.683</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">3.0</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">-1.1</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">3.6</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">0.4</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #552583;">1.70</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">1981-82</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">Los Angeles Lakers</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">57</td>
-<td class="gt_row gt_center" style="color: #552583;">25</td>
-<td class="gt_row gt_center" style="color: #552583;">0.695</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">2.5</td>
-<td class="gt_row gt_center" style="color: #552583;">0.1</td>
-<td class="gt_row gt_center" style="color: #552583;">2.1</td>
-<td class="gt_row gt_center" style="color: #552583;">1.7</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #552583;">1.70</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #860038;">2015-16</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #860038;">Cleveland Cavaliers</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #860038;">57</td>
-<td class="gt_row gt_center gt_striped" style="color: #860038;">25</td>
-<td class="gt_row gt_center gt_striped" style="color: #860038;">0.695</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #860038;">2.8</td>
-<td class="gt_row gt_center gt_striped" style="color: #860038;">-0.1</td>
-<td class="gt_row gt_center gt_striped" style="color: #860038;">3.6</td>
-<td class="gt_row gt_center gt_striped" style="color: #860038;">-1.1</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #860038;">1.65</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">1992-93</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">Chicago Bulls</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">57</td>
-<td class="gt_row gt_center" style="color: #CE1141;">25</td>
-<td class="gt_row gt_center" style="color: #CE1141;">0.695</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">0.6</td>
-<td class="gt_row gt_center" style="font-style: oblique; font-weight: bolder; color: #CE1141;">3.4</td>
-<td class="gt_row gt_center" style="color: #CE1141;">5.0</td>
-<td class="gt_row gt_center" style="color: #CE1141;">-4.0</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #CE1141;">1.49</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">2009-10</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">Los Angeles Lakers</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">57</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">25</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">0.695</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">1.2</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">0.8</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">2.0</td>
-<td class="gt_row gt_center gt_striped" style="color: #552583;">2.6</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #552583;">1.47</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">2018-19</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">Toronto Raptors</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">58</td>
-<td class="gt_row gt_center" style="color: #CE1141;">24</td>
-<td class="gt_row gt_center" style="color: #CE1141;">0.707</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">3.4</td>
-<td class="gt_row gt_center" style="color: #CE1141;">0.7</td>
-<td class="gt_row gt_center" style="color: #CE1141;">-1.0</td>
-<td class="gt_row gt_center" style="color: #CE1141;">0.8</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #CE1141;">1.46</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">1993-94</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">Houston Rockets</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">58</td>
-<td class="gt_row gt_center gt_striped" style="color: #CE1141;">24</td>
-<td class="gt_row gt_center gt_striped" style="color: #CE1141;">0.707</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">4.9</td>
-<td class="gt_row gt_center gt_striped" style="color: #CE1141;">-1.7</td>
-<td class="gt_row gt_center gt_striped" style="color: #CE1141;">-2.7</td>
-<td class="gt_row gt_center gt_striped" style="color: #CE1141;">2.6</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #CE1141;">1.39</td></tr>
-    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #00538C;">2010-11</td>
-<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #00538C;">Dallas Mavericks</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #00538C;">57</td>
-<td class="gt_row gt_center" style="color: #00538C;">25</td>
-<td class="gt_row gt_center" style="color: #00538C;">0.695</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #00538C;">3.7</td>
-<td class="gt_row gt_center" style="color: #00538C;">-0.6</td>
-<td class="gt_row gt_center" style="color: #00538C;">-1.1</td>
-<td class="gt_row gt_center" style="color: #00538C;">1.6</td>
-<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #00538C;">1.35</td></tr>
-    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #CE1141;">1994-95</td>
-<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #CE1141;">Houston Rockets</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #CE1141;">47</td>
-<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #CE1141;">35</td>
-<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #CE1141;">0.573</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #CE1141;">4.0</td>
-<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #CE1141;">-1.1</td>
-<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #CE1141;">-5.4</td>
-<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #CE1141;">3.3</td>
-<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #CE1141;">0.74</td></tr>
+    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">2016-17</td>
+<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">Golden State Warriors</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">67</td>
+<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">15</td>
+<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">0.817</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; font-style: oblique; font-weight: bolder; color: #FFC72C;">7.7</td>
+<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">0.3</td>
+<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">-2.3</td>
+<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">0.6</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">2.78</td></tr>
   </tbody>
   <tfoot class="gt_sourcenotes">
     <tr>
@@ -1264,6 +876,7 @@ young &lt;- rookies %&gt;%
   
 </table>
 </div>
+<p>The Chicago Bulls <strong>dominated</strong> the top 10 list. The 1995-96 Jordan-led team ended the season on a then-record 72 wins. Their Net TOV% of 3.0 was highest in the top 10, and a Net ORB% of 8.0 was good for first all time, dating back to the 1979-80 NBA champion. The 1998-99 San Antonio Spurs excelled at getting to the free throw line compared to their opponents, and the Golden State Warriors from 2016-17 shot at an insane efficiency compared to their opponents (good for first all-time, also dating back to 1979-80).</p>
 
     </div>
   </article>

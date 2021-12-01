@@ -12,9 +12,9 @@
       <pubDate>Tue, 30 Nov 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/11/30/three-nba-trends-to-follow/</guid>
-      <description>Similar to my previous post about the MLB, I wanted to take a turn and bring attention to two interesting trends happening in the NBA today, as well as a peek at Dean Oliver’s “Four Factors of Basketball Success.” The two trends I’ll be visualizing look at the main pillar of basketball today: three-point shooting.
+      <description>Similar to my previous post about the MLB, I wanted to take a turn and bring attention to two interesting trends happening in the NBA today, as well as a peek at Dean Oliver’s “Four Factors of Basketball Success.” The two trends I’ll be visualizing look at the main pillar of basketball today: 3-point shooting.
 I’ll begin by loading tidyverse, ggrepel, and gt.
-library(tidyverse) library(ggrepel) library(gt) The first trend I’ll be showcasing is three-point attempts (3PA) per game by each team.</description>
+library(tidyverse) library(ggrepel) library(gt) The first trend I’ll be showcasing is 3-point attempts (3PA) per game by each team.</description>
     </item>
     
     <item>

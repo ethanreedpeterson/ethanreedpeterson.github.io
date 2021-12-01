@@ -119,19 +119,19 @@ threepoint %&gt;%
   geom_line(data = MIN, aes(x = Season, y = `3Pgame`, group = Team), color = &quot;#78BE20&quot;, alpha = 1) +
 #Team name labels
   geom_text(aes(x = 2018.5, y = 44.8, fontface = 2), 
-            label = &quot;Rockets&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = 16) +
+            label = &quot;Rockets&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = 18) +
   geom_text(aes(x = 2018.5, y = 32.7, fontface = 2), 
-            label = &quot;Warriors&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 26.5) +
+            label = &quot;Warriors&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 31) +
   geom_text(aes(x = 2018.5, y = 26.7, fontface = 2), 
-            label = &quot;Timberwolves&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 29) +
+            label = &quot;Timberwolves&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 35) +
 #2015 3PA rankings labels
-  geom_text(aes(x = 2015.2, y = 33.3), label = &quot;1st&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = -9) +
+  geom_text(aes(x = 2015.2, y = 33.3), label = &quot;1st&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = -10) +
   geom_text(aes(x = 2015.2, y = 26.8), label = &quot;4th&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 25) +
   geom_text(aes(x = 2015.2, y = 16.1), label = &quot;30th&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 8) +
 #2022 3PA rankings labels  
-  geom_text(aes(x = 2021.84, y = 34.9), label = &quot;19th&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = -26) +
+  geom_text(aes(x = 2021.84, y = 36.4), label = &quot;19th&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = -26) +
   geom_text(aes(x = 2021.84, y = 39.8), label = &quot;3rd&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 15) +
-  geom_text(aes(x = 2021.84, y = 43), label = &quot;1st&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 28) +
+  geom_text(aes(x = 2021.84, y = 42.8), label = &quot;1st&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 28) +
   scale_y_continuous(breaks = seq(0,50, by = 10), limits = c(14, 50)) + 
   scale_x_continuous(breaks = seq(2015,2022, by = 1), expand = c(0,0.17)) +
   labs(
@@ -404,12 +404,12 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
     locations = cells_body(
       rows = Team == &quot;Golden State Warriors&quot;)
     )</code></pre>
-<div id="uzqixhmqff" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="rpxsqswupm" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#uzqixhmqff .gt_table {
+#rpxsqswupm .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -434,7 +434,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-left-color: #D3D3D3;
 }
 
-#uzqixhmqff .gt_heading {
+#rpxsqswupm .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -446,7 +446,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#uzqixhmqff .gt_title {
+#rpxsqswupm .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -456,7 +456,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-bottom-width: 0;
 }
 
-#uzqixhmqff .gt_subtitle {
+#rpxsqswupm .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -466,13 +466,13 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-top-width: 0;
 }
 
-#uzqixhmqff .gt_bottom_border {
+#rpxsqswupm .gt_bottom_border {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uzqixhmqff .gt_col_headings {
+#rpxsqswupm .gt_col_headings {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -487,7 +487,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#uzqixhmqff .gt_col_heading {
+#rpxsqswupm .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -507,7 +507,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   overflow-x: hidden;
 }
 
-#uzqixhmqff .gt_column_spanner_outer {
+#rpxsqswupm .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -519,15 +519,15 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-right: 4px;
 }
 
-#uzqixhmqff .gt_column_spanner_outer:first-child {
+#rpxsqswupm .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uzqixhmqff .gt_column_spanner_outer:last-child {
+#rpxsqswupm .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uzqixhmqff .gt_column_spanner {
+#rpxsqswupm .gt_column_spanner {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -539,7 +539,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   width: 100%;
 }
 
-#uzqixhmqff .gt_group_heading {
+#rpxsqswupm .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -561,7 +561,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   vertical-align: middle;
 }
 
-#uzqixhmqff .gt_empty_group_heading {
+#rpxsqswupm .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -576,15 +576,15 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   vertical-align: middle;
 }
 
-#uzqixhmqff .gt_from_md > :first-child {
+#rpxsqswupm .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uzqixhmqff .gt_from_md > :last-child {
+#rpxsqswupm .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uzqixhmqff .gt_row {
+#rpxsqswupm .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -603,7 +603,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   overflow-x: hidden;
 }
 
-#uzqixhmqff .gt_stub {
+#rpxsqswupm .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -615,7 +615,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-left: 12px;
 }
 
-#uzqixhmqff .gt_summary_row {
+#rpxsqswupm .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -625,7 +625,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-right: 5px;
 }
 
-#uzqixhmqff .gt_first_summary_row {
+#rpxsqswupm .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -635,7 +635,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-top-color: #D3D3D3;
 }
 
-#uzqixhmqff .gt_grand_summary_row {
+#rpxsqswupm .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -645,7 +645,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-right: 5px;
 }
 
-#uzqixhmqff .gt_first_grand_summary_row {
+#rpxsqswupm .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -655,11 +655,11 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-top-color: #D3D3D3;
 }
 
-#uzqixhmqff .gt_striped {
+#rpxsqswupm .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uzqixhmqff .gt_table_body {
+#rpxsqswupm .gt_table_body {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -668,7 +668,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-bottom-color: #D3D3D3;
 }
 
-#uzqixhmqff .gt_footnotes {
+#rpxsqswupm .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -682,13 +682,13 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#uzqixhmqff .gt_footnote {
+#rpxsqswupm .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#uzqixhmqff .gt_sourcenotes {
+#rpxsqswupm .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -702,41 +702,41 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#uzqixhmqff .gt_sourcenote {
+#rpxsqswupm .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#uzqixhmqff .gt_left {
+#rpxsqswupm .gt_left {
   text-align: left;
 }
 
-#uzqixhmqff .gt_center {
+#rpxsqswupm .gt_center {
   text-align: center;
 }
 
-#uzqixhmqff .gt_right {
+#rpxsqswupm .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uzqixhmqff .gt_font_normal {
+#rpxsqswupm .gt_font_normal {
   font-weight: normal;
 }
 
-#uzqixhmqff .gt_font_bold {
+#rpxsqswupm .gt_font_bold {
   font-weight: bold;
 }
 
-#uzqixhmqff .gt_font_italic {
+#rpxsqswupm .gt_font_italic {
   font-style: italic;
 }
 
-#uzqixhmqff .gt_super {
+#rpxsqswupm .gt_super {
   font-size: 65%;
 }
 
-#uzqixhmqff .gt_footnote_marks {
+#rpxsqswupm .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

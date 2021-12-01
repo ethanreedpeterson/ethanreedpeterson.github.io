@@ -81,12 +81,11 @@
 <pre class="r"><code>library(tidyverse)
 library(ggrepel)
 library(gt)</code></pre>
-<p>The first trend I’ll be showcasing is three-point attempts per game by each team.
+<p>The first trend I’ll be showcasing is three-point attempts (3PA) per game by each team.
 It’s obvious that the player who catapulted three-point shooting to it’s throne today is Stephen Curry. I’m interested to see how Curry’s voluminous three-point shooting has affected the league since the 2014-15 season (his first ring, thanks to a ridiculous 44% on 8.1 attempts from three).</p>
 <p>I’ll start with loading in our data.</p>
 <pre class="r"><code>threepoint &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/threepointattempts.csv&quot;)</code></pre>
-<p>The data itself is your typical team season stats, but I’m only interested in the three-point stats.</p>
-<p>I’ll be mutating two fields. One is <strong>3Ppct</strong>, which I need to multiply by 100 to get to a readable percentage. The other is <strong>3Pgame</strong>, which divides the total three-point attempts by total games so we can get our average 3PA per game.</p>
+<p>I’m only interested in the three-point stats. Furthermore, I’ll be mutating two fields. <strong>3Ppct</strong>: multiplying by 100 to get a readable percentage. <strong>3Pgame</strong>: divides total 3PA by total games to get average 3PA per game.</p>
 <pre class="r"><code>threepoint &lt;- threepoint %&gt;%
   select(Season, Team, G, `3P`, `3PA`, `3Ppct`) %&gt;%
   mutate(
@@ -131,7 +130,7 @@ threepoint %&gt;%
   geom_text(aes(x = 2015.2, y = 16.1), label = &quot;30th&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 8) +
 #2022 3PA rankings labels  
   geom_text(aes(x = 2021.84, y = 34.9), label = &quot;19th&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = -26) +
-  geom_text(aes(x = 2021.84, y = 40.2), label = &quot;3rd&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 15) +
+  geom_text(aes(x = 2021.84, y = 39.8), label = &quot;3rd&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 15) +
   geom_text(aes(x = 2021.84, y = 43), label = &quot;1st&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 28) +
   scale_y_continuous(breaks = seq(0,50, by = 10), limits = c(14, 50)) + 
   scale_x_continuous(breaks = seq(2015,2022, by = 1), expand = c(0,0.17)) +
@@ -150,12 +149,12 @@ threepoint %&gt;%
     panel.grid.minor = element_blank()
     )</code></pre>
 <p><img src="/2021/11/30/three-nba-trends-to-follow/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<p>Woah. The Minnesota Timberwolves are first in the league this season (42.9 3PA per game). Up from LAST in the league in 2014-15 (14.9 3PA per game). That’s a <strong>287% increase</strong>.</p>
-<p>Interestingly enough, the Warriors were only first in the league once, the 2015-16 season. Other than that, they’ve either been near the top or middle of the pack. Losing Klay and Steph in the 2019-20 season visably and understandably hurt their production.</p>
-<p>The Houston Rockets, on the other hand, were first in the league in five out of the eight seasons. Harden’s time in H-town led to an absolutely insane amount of shots taken from behind the arc. The Rockets attempted an unfathomable 45 three-pointers per game in back-to-back seasons. With Harden now gone, their attempts dropped considerably.</p>
-<p>I want to switch gears from team numbers to player numbers. Today’s young players grew up idolizing Steph Curry three-point abilities. 11 rookies have attempted over 400 3-pointers in NBA history. Eight of those rookies’ debut season was after Curry’s (2009-10). The Curry effect? Possibly. We’re going to be focusing on one rookie from this season: Jalen Green, and comparing him to the rest of the rookie top 5 for total 3PA in one season.</p>
+<p>The T-wolves are 1st in the league this season (42.9 3PA/game). Up from LAST in the league in 2014-15 (14.9 3PA/game) – a <strong>287% increase</strong>.</p>
+<p>Golden State, known for 3-point shooting, was only first in the league once (2015-16). Other seasons they’ve been near the top or buried in the middle. Klay and Steph going down to injury in 2019-20 understandably hurt their production.</p>
+<p>The Rockets, on the other hand, were first in the league in five out of the eight seasons. James Harden’s time in H-town led to an absolutely insane amount of shots taken from behind the arc. The Rockets set an unfathomable record 45 3PA/game in back-to-back seasons. With Harden now gone, their attempts have been slashed.</p>
+<p>Switching gears from team stats to player stats The NBA’s young talent grew up watching Steph Curry light up the game from three. In NBA history, there’s been 11 rookies who’ve logged 400+ 3PA. Eight of them debuted after Curry’s rookie season (2009-10). The Curry effect? That’s up for debate. I’ll focus on this season’s rookie 3PA leader, Jalen Green, and compare him to the current rookie top 5 for total 3PA.</p>
 <pre class="r"><code>rookies &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/nbathreepoint.csv&quot;) </code></pre>
-<p>The current rookie record is 550 3PA in one season, owned by Utah Jazz guard Donovan Mitchell. As of December 5, 2021, Jalen Green leads all rookies with 115 3PA in 18 games. Can he beat out Mitchell’s record? Is he on pace to?</p>
+<p>The current rookie record is held by Donovan Mitchell (550 3PA). As of December 1, 2021, Jalen Green leads all rookies with 115 3PA in 18 games. Is he on pace to pass Mitchell’s record?</p>
 <pre class="r"><code>green &lt;- rookies %&gt;%
   filter(Player == &quot;Jalen Green&quot;) %&gt;% 
   group_by(Player) %&gt;% 
@@ -184,7 +183,7 @@ doncic &lt;- rookies %&gt;%
 young &lt;- rookies %&gt;%
   filter(Player == &quot;Trae Young&quot;) %&gt;% 
   mutate(CumThreePoint = cumsum(`3PA`))</code></pre>
-<p>Using a step chart, I’ll look at each player’s cumulative 3PA during their rookie season. I’ll see if Jalen Green is truly on pace to beat out the record, albeit we’re only 21 games into the season.</p>
+<p>Using a step chart, I’ll look at each player’s cumulative 3PA during their rookie season. Is Jalen Green truly on pace to beat out the record? <em>Do note: we’re only 21 games into the season.</em></p>
 <pre class="r"><code>ggplot() + 
 #Player cumulative 3PA
   geom_step(data = mitchell, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#00471B&quot;, alpha = 0.5) +
@@ -217,16 +216,16 @@ young &lt;- rookies %&gt;%
     panel.grid.minor = element_blank()
     )</code></pre>
 <p><img src="/2021/11/30/three-nba-trends-to-follow/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>By looking at this graph, Jalen Green seems on pace to break (or nearly break) the rookie 3PA record. His 3-point percentage is lackluster, though (an abysmal 28%). The current top 5 rookies all shot above 32%.</p>
-<p>Lastly, I’ll be looking at something other than 3-point shooting. How do basketball teams win games? <a href="https://www.basketball-reference.com/about/factors.html">Dean Oliver</a> identified what he called the “Four Factors of Basketball Success.” Shooting, turnovers, rebounding, and free throws. He weighted them in order of importance: shooting = 40%, turnovers = 25%, rebounding = 20%, and free throws = 15%.</p>
-<p>Shooting is measured with Effective Field Goal Percentage (eFG%), turnovers are measured using Turnover Percentage (TOV%), rebounding with Offensive and Defensive Rebound Percentage (ORB% and DRB%), and free throws by how often a team gets to the line and how often they make them, using Free Throws per Field Goal Attempt (FT/FGA).</p>
-<p>Because basketball is an offensive and defensive game, Dean Oliver’s theory can have up to eight factors. First, I’ll load in our data, which is every NBA championship team since the 1979-80 season (when TOV% was first used) and their season stats. Then, I’ll select the necessary columns.</p>
+<p>Jalen Green appears to be on pace to get awfully close to the rookie 3PA record. His 115 3PA is ahead of Mitchell’s 104 3PA through 18 games. His 3-point percentage is lackluster, though (an abysmal 28%). The current top 5 rookies all shot above 32%.</p>
+<p>Lastly, I’ll be looking at a different metric. How do basketball teams win games? <a href="https://www.basketball-reference.com/about/factors.html">Dean Oliver</a> identified what he called the “Four Factors of Basketball Success.” Shooting, turnovers, rebounding, and free throws. He weighted them in order of importance: shooting (40%), turnovers (25%), rebounding (20%), and free throws (15%).</p>
+<p>Shooting is measured with Effective Field Goal Percentage (eFG%), turnovers are measured with Turnover Percentage (TOV%), rebounding with Offensive and Defensive Rebound Percentage (ORB% and DRB%), and free throws by how often a team gets to the line and how often they make them – Free Throws per Field Goal Attempt (FT/FGA).</p>
+<p>Because basketball is an offensive and defensive game, Dean Oliver’s theory can include up to eight factors. First, loading in our data, which has season stats of every NBA championship team since the 1979-80 season (when TOV% was first implemented). Then, only selecting the needed stats.</p>
 <pre class="r"><code>champs &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/champs.csv&quot;)
 
 champs &lt;- champs %&gt;%
   select(Season, Team, W, L, Pct, `eFG%`, `TOV%`, `ORB%`, FT_FGA, `OppeFG%`, `OppTOV%`, `OppORB%`, OppFT_FGA)</code></pre>
-<p>I want to make a readable table to showcase the top 10 Finals champs based on Dean Oliver’s success factors. With the data I have, I need to multiply the eight factors by 100 so I have a readable percentage. Then, I’ll mutate a net value for each category (Net eFG%, Net TOV%, Net ORB%, and Net FT_FGA). This is so we can accurately see if the teams out-performed their opponents in each category.
-Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, which takes each net value and multiplies it by its respective weight that Oliver listed, and then adding them together.</p>
+<p>A table is how I’ll showcase the top 10 Finals champs based on Dean Oliver’s success factors. I’m going to mutate and multiply the eight factors by 100 so I have a readable percentage. Then mutate a net value for each category (Net eFG%, Net TOV%, Net ORB%, and Net FT_FGA). This is so we can accurately see if the teams out-performed their opponents in each category.
+Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes each net value and multiplies it by its respective weight that Oliver listed, then adding them together.</p>
 <pre class="r"><code>champs %&gt;%
   mutate(
     `eFG%` = (`eFG%` * 100),           #shifting decimal point so its on a 1-100 scale
@@ -242,7 +241,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
     `Net_ORB%` = (`ORB%` - `OppORB%`),
      Net_FT_FGA = (FT_FGA - OppFT_FGA),
      FourFactorScore = (`Net_eFG%` * .40) + (`Net_TOV%` * .25) + (`Net_ORB%` * .20) + (Net_FT_FGA * .15)) -&gt; champsstats</code></pre>
-<p>Finally, I’ll select the necessary columns for the table.</p>
+<p>Finally, I’ll select the W/L records and net statistics.</p>
 <pre class="r"><code>champsstats %&gt;% 
   select(Season, Team, W, L, Pct, `Net_eFG%`, `Net_TOV%`, `Net_ORB%`, Net_FT_FGA, FourFactorScore) -&gt; champstable</code></pre>
 <p>Let’s see which NBA champion fit Dean Oliver’s model the best.</p>
@@ -324,7 +323,8 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
     fmt_number(
     columns = c(FourFactorScore),
     decimals = 2
-    ) %&gt;%                              #Adding bold to the highest value in each column
+    ) %&gt;% 
+#Adding bold to the highest value in each column
   tab_style(
     style = list(
       cell_text(weight = &quot;bolder&quot;, style = &quot;oblique&quot;)
@@ -403,13 +403,13 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
       ),
     locations = cells_body(
       rows = Team == &quot;Golden State Warriors&quot;)
-    ) </code></pre>
-<div id="zfpjmqfmrx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+    )</code></pre>
+<div id="polfilpiux" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#zfpjmqfmrx .gt_table {
+#polfilpiux .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -434,7 +434,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-left-color: #D3D3D3;
 }
 
-#zfpjmqfmrx .gt_heading {
+#polfilpiux .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -446,7 +446,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-right-color: #D3D3D3;
 }
 
-#zfpjmqfmrx .gt_title {
+#polfilpiux .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -456,7 +456,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-bottom-width: 0;
 }
 
-#zfpjmqfmrx .gt_subtitle {
+#polfilpiux .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -466,13 +466,13 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-top-width: 0;
 }
 
-#zfpjmqfmrx .gt_bottom_border {
+#polfilpiux .gt_bottom_border {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#zfpjmqfmrx .gt_col_headings {
+#polfilpiux .gt_col_headings {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -487,7 +487,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-right-color: #D3D3D3;
 }
 
-#zfpjmqfmrx .gt_col_heading {
+#polfilpiux .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -507,7 +507,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   overflow-x: hidden;
 }
 
-#zfpjmqfmrx .gt_column_spanner_outer {
+#polfilpiux .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -519,15 +519,15 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   padding-right: 4px;
 }
 
-#zfpjmqfmrx .gt_column_spanner_outer:first-child {
+#polfilpiux .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#zfpjmqfmrx .gt_column_spanner_outer:last-child {
+#polfilpiux .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#zfpjmqfmrx .gt_column_spanner {
+#polfilpiux .gt_column_spanner {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -539,7 +539,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   width: 100%;
 }
 
-#zfpjmqfmrx .gt_group_heading {
+#polfilpiux .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -561,7 +561,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   vertical-align: middle;
 }
 
-#zfpjmqfmrx .gt_empty_group_heading {
+#polfilpiux .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -576,15 +576,15 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   vertical-align: middle;
 }
 
-#zfpjmqfmrx .gt_from_md > :first-child {
+#polfilpiux .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#zfpjmqfmrx .gt_from_md > :last-child {
+#polfilpiux .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#zfpjmqfmrx .gt_row {
+#polfilpiux .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -603,7 +603,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   overflow-x: hidden;
 }
 
-#zfpjmqfmrx .gt_stub {
+#polfilpiux .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -615,7 +615,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   padding-left: 12px;
 }
 
-#zfpjmqfmrx .gt_summary_row {
+#polfilpiux .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -625,7 +625,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   padding-right: 5px;
 }
 
-#zfpjmqfmrx .gt_first_summary_row {
+#polfilpiux .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -635,7 +635,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-top-color: #D3D3D3;
 }
 
-#zfpjmqfmrx .gt_grand_summary_row {
+#polfilpiux .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -645,7 +645,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   padding-right: 5px;
 }
 
-#zfpjmqfmrx .gt_first_grand_summary_row {
+#polfilpiux .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -655,11 +655,11 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-top-color: #D3D3D3;
 }
 
-#zfpjmqfmrx .gt_striped {
+#polfilpiux .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#zfpjmqfmrx .gt_table_body {
+#polfilpiux .gt_table_body {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -668,7 +668,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-bottom-color: #D3D3D3;
 }
 
-#zfpjmqfmrx .gt_footnotes {
+#polfilpiux .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -682,13 +682,13 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-right-color: #D3D3D3;
 }
 
-#zfpjmqfmrx .gt_footnote {
+#polfilpiux .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#zfpjmqfmrx .gt_sourcenotes {
+#polfilpiux .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -702,41 +702,41 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-right-color: #D3D3D3;
 }
 
-#zfpjmqfmrx .gt_sourcenote {
+#polfilpiux .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#zfpjmqfmrx .gt_left {
+#polfilpiux .gt_left {
   text-align: left;
 }
 
-#zfpjmqfmrx .gt_center {
+#polfilpiux .gt_center {
   text-align: center;
 }
 
-#zfpjmqfmrx .gt_right {
+#polfilpiux .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#zfpjmqfmrx .gt_font_normal {
+#polfilpiux .gt_font_normal {
   font-weight: normal;
 }
 
-#zfpjmqfmrx .gt_font_bold {
+#polfilpiux .gt_font_bold {
   font-weight: bold;
 }
 
-#zfpjmqfmrx .gt_font_italic {
+#polfilpiux .gt_font_italic {
   font-style: italic;
 }
 
-#zfpjmqfmrx .gt_super {
+#polfilpiux .gt_super {
   font-size: 65%;
 }
 
-#zfpjmqfmrx .gt_footnote_marks {
+#polfilpiux .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

@@ -225,7 +225,7 @@ young &lt;- rookies %&gt;%
 
 champs &lt;- champs %&gt;%
   select(Season, Team, W, L, Pct, `eFG%`, `TOV%`, `ORB%`, FT_FGA, `OppeFG%`, `OppTOV%`, `OppORB%`, OppFT_FGA)</code></pre>
-<p>I want to make a readable table to showcase the top 10 championship teams based on Dean Oliver’s success factors. With the data I have, I need to multiply the eight factors by 100 so I have a readable percentage. Then, I’ll mutate a net value for each category (Net eFG%, Net TOV%, Net ORB%, and Net FT_FGA). This is so we can accurately see if the teams out-performed their opponents in each category.
+<p>I want to make a readable table to showcase the top 10 Finals champs based on Dean Oliver’s success factors. With the data I have, I need to multiply the eight factors by 100 so I have a readable percentage. Then, I’ll mutate a net value for each category (Net eFG%, Net TOV%, Net ORB%, and Net FT_FGA). This is so we can accurately see if the teams out-performed their opponents in each category.
 Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, which takes each net value and multiplies it by its respective weight that Oliver listed, and then adding them together.</p>
 <pre class="r"><code>champs %&gt;%
   mutate(
@@ -404,13 +404,12 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
     locations = cells_body(
       rows = Team == &quot;Golden State Warriors&quot;)
     ) </code></pre>
-<pre><code>## Selecting by FourFactorScore</code></pre>
-<div id="inadzxhcgz" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="zfpjmqfmrx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#inadzxhcgz .gt_table {
+#zfpjmqfmrx .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -435,7 +434,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-left-color: #D3D3D3;
 }
 
-#inadzxhcgz .gt_heading {
+#zfpjmqfmrx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -447,7 +446,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-right-color: #D3D3D3;
 }
 
-#inadzxhcgz .gt_title {
+#zfpjmqfmrx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -457,7 +456,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-bottom-width: 0;
 }
 
-#inadzxhcgz .gt_subtitle {
+#zfpjmqfmrx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -467,13 +466,13 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-top-width: 0;
 }
 
-#inadzxhcgz .gt_bottom_border {
+#zfpjmqfmrx .gt_bottom_border {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#inadzxhcgz .gt_col_headings {
+#zfpjmqfmrx .gt_col_headings {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -488,7 +487,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-right-color: #D3D3D3;
 }
 
-#inadzxhcgz .gt_col_heading {
+#zfpjmqfmrx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -508,7 +507,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   overflow-x: hidden;
 }
 
-#inadzxhcgz .gt_column_spanner_outer {
+#zfpjmqfmrx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -520,15 +519,15 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   padding-right: 4px;
 }
 
-#inadzxhcgz .gt_column_spanner_outer:first-child {
+#zfpjmqfmrx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#inadzxhcgz .gt_column_spanner_outer:last-child {
+#zfpjmqfmrx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#inadzxhcgz .gt_column_spanner {
+#zfpjmqfmrx .gt_column_spanner {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -540,7 +539,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   width: 100%;
 }
 
-#inadzxhcgz .gt_group_heading {
+#zfpjmqfmrx .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -562,7 +561,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   vertical-align: middle;
 }
 
-#inadzxhcgz .gt_empty_group_heading {
+#zfpjmqfmrx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -577,15 +576,15 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   vertical-align: middle;
 }
 
-#inadzxhcgz .gt_from_md > :first-child {
+#zfpjmqfmrx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#inadzxhcgz .gt_from_md > :last-child {
+#zfpjmqfmrx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#inadzxhcgz .gt_row {
+#zfpjmqfmrx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -604,7 +603,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   overflow-x: hidden;
 }
 
-#inadzxhcgz .gt_stub {
+#zfpjmqfmrx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -616,7 +615,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   padding-left: 12px;
 }
 
-#inadzxhcgz .gt_summary_row {
+#zfpjmqfmrx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -626,7 +625,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   padding-right: 5px;
 }
 
-#inadzxhcgz .gt_first_summary_row {
+#zfpjmqfmrx .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -636,7 +635,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-top-color: #D3D3D3;
 }
 
-#inadzxhcgz .gt_grand_summary_row {
+#zfpjmqfmrx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -646,7 +645,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   padding-right: 5px;
 }
 
-#inadzxhcgz .gt_first_grand_summary_row {
+#zfpjmqfmrx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -656,11 +655,11 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-top-color: #D3D3D3;
 }
 
-#inadzxhcgz .gt_striped {
+#zfpjmqfmrx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#inadzxhcgz .gt_table_body {
+#zfpjmqfmrx .gt_table_body {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -669,7 +668,7 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-bottom-color: #D3D3D3;
 }
 
-#inadzxhcgz .gt_footnotes {
+#zfpjmqfmrx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -683,13 +682,13 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-right-color: #D3D3D3;
 }
 
-#inadzxhcgz .gt_footnote {
+#zfpjmqfmrx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#inadzxhcgz .gt_sourcenotes {
+#zfpjmqfmrx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -703,41 +702,41 @@ Finally, I’ll be mutating a final value, <strong>FourFactorScore</strong>, whi
   border-right-color: #D3D3D3;
 }
 
-#inadzxhcgz .gt_sourcenote {
+#zfpjmqfmrx .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#inadzxhcgz .gt_left {
+#zfpjmqfmrx .gt_left {
   text-align: left;
 }
 
-#inadzxhcgz .gt_center {
+#zfpjmqfmrx .gt_center {
   text-align: center;
 }
 
-#inadzxhcgz .gt_right {
+#zfpjmqfmrx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#inadzxhcgz .gt_font_normal {
+#zfpjmqfmrx .gt_font_normal {
   font-weight: normal;
 }
 
-#inadzxhcgz .gt_font_bold {
+#zfpjmqfmrx .gt_font_bold {
   font-weight: bold;
 }
 
-#inadzxhcgz .gt_font_italic {
+#zfpjmqfmrx .gt_font_italic {
   font-style: italic;
 }
 
-#inadzxhcgz .gt_super {
+#zfpjmqfmrx .gt_super {
   font-size: 65%;
 }
 
-#inadzxhcgz .gt_footnote_marks {
+#zfpjmqfmrx .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

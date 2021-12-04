@@ -151,9 +151,9 @@ After being LAST in 2014-15 (14.9 3PA/game), Minnesota is FIRST this season (42.
 <p>The Rockets, on the other hand, were first in the league in five out of the eight seasons. James Harden’s time in H-town led to an absolutely insane amount of shots taken from behind the arc. The Rockets set an unfathomable record 45 3PA/game in back-to-back seasons. With Harden now gone, their attempts have been slashed.</p>
 <p>On to player 3-point shooting. The NBA’s young talent saw the surge in 3-point shooting and wanted to emulate that. In NBA history, there’s been 11 rookies who’ve logged 400+ 3PA. Eight of them debuted after Curry’s rookie season (2009-10). The Curry effect? Possibly. I’ll focus on this season’s rookie 3PA leader, Jalen Green, and compare him to the current rookie top 5 for total 3PA.</p>
 <pre class="r"><code>rookies &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/nbathreepoint.csv&quot;) </code></pre>
-<p>The current rookie record is held by Donovan Mitchell (550 3PA). As of December 1, 2021, Jalen Green leads all rookies with 115 3PA in 18 games. Is he on pace to pass Mitchell’s record?</p>
-<pre class="r"><code>green &lt;- rookies %&gt;%
-  filter(Player == &quot;Jalen Green&quot;) %&gt;% 
+<p>The current rookie record is held by Donovan Mitchell (550 3PA). As of December 4, 2021, Cade Cunningham is 2nd among rookies with 122 3PA in 18 games (Chris Duarte is 1st, with 126 3PA, but he’s played six more games than Cunningham, a very small margin). Is he on pace to pass Mitchell’s record?</p>
+<pre class="r"><code>cade &lt;- rookies %&gt;%
+  filter(Player == &quot;Cade Cunningham&quot;) %&gt;% 
   group_by(Player) %&gt;% 
   mutate(CumThreePoint = cumsum(`3PA`))
 
@@ -183,25 +183,25 @@ young &lt;- rookies %&gt;%
 <p>Using a step chart, I’ll look at each player’s cumulative 3PA, focusing on Jalen Green. <em>Do note: we’re only 21 games into the season.</em></p>
 <pre class="r"><code>ggplot() + 
 #Player cumulative 3PA
-  geom_step(data = mitchell, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#00471B&quot;, alpha = 0.5) +
-  geom_step(data = edwards, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#78BE20&quot;, alpha = 0.5) +
-  geom_step(data = lillard, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#E03A3E&quot;, alpha = 0.5) +
-  geom_step(data = doncic, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#00538C&quot;, alpha = 0.5) +
-  geom_step(data = young, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#C1D32F&quot;, alpha = 0.5) +
-  geom_step(data = green, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#CE1141&quot;, alpha = 1) +
+  geom_step(data = mitchell, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#00471B&quot;, alpha = 0.6) +
+  geom_step(data = edwards, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#78BE20&quot;, alpha = 0.4) +
+  geom_step(data = lillard, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#E03A3E&quot;, alpha = 0.4) +
+  geom_step(data = doncic, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#00538C&quot;, alpha = 0.4) +
+  geom_step(data = young, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#C1D32F&quot;, alpha = 0.4) +
+  geom_step(data = cade, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#1D42BA&quot;, alpha = 1) +
 #Player labels  
-  geom_text(aes(x = 11.6, y = 100), label = &quot;Jalen Green&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 1, angle = 25) +
+  geom_text(aes(x = 10.5, y = 95), label = &quot;Cade Cunningham&quot;, color = &quot;#1D42BA&quot;, size = 3, alpha = 1, angle = 29) +
   geom_text(aes(x = 78.5, y = 560), label = &quot;Donovan Mitchell&quot;, color = &quot;#00471B&quot;, size = 3, alpha = 0.6) +
-  geom_text(aes(x = 35, y = 160), label = &quot;Trae Young&quot;, color = &quot;#C1D32F&quot;, size = 3, alpha = 0.6, angle = 10) +
-  geom_text(aes(x = 46, y = 330), label = &quot;Anthony Edwards&quot;, color = &quot;#78BE20&quot;, size = 3, alpha = 0.6, angle = 30) +
-  geom_text(aes(x = 75, y = 475), label = &quot;Damian Lillard&quot;, color = &quot;#E03A3E&quot;, size = 3, alpha = 0.6, angle = 26) +
-  geom_text(aes(x = 62, y = 460), label = &quot;Luka Dončić&quot;, color = &quot;#00538C&quot;, size = 3, alpha = 0.6, angle = 30) +
+  geom_text(aes(x = 35, y = 160), label = &quot;Trae Young&quot;, color = &quot;#C1D32F&quot;, size = 3, alpha = 0.5, angle = 14) +
+  geom_text(aes(x = 43, y = 305), label = &quot;Anthony Edwards&quot;, color = &quot;#78BE20&quot;, size = 3, alpha = 0.5, angle = 34) +
+  geom_text(aes(x = 76, y = 483), label = &quot;Damian Lillard&quot;, color = &quot;#E03A3E&quot;, size = 3, alpha = 0.3, angle = 27) +
+  geom_text(aes(x = 59, y = 435), label = &quot;Luka Dončić&quot;, color = &quot;#00538C&quot;, size = 3, alpha = 0.3, angle = 35) +
   theme_minimal() +
   scale_y_continuous(breaks = seq(0,500, by = 100)) +
   scale_x_continuous(breaks = seq(0,90, by = 10)) +
   labs(
     title = &quot;Rookie 3-point attempt record to be eclipsed?&quot;,
-    subtitle = &quot;Rockets guard Jalen Green is on pace to attempt the most threes by a rookie in NBA history.&quot;,
+    subtitle = &quot;Pistons PG Cade Cunningham is on pace to attempt the most threes by a rookie in NBA history.&quot;,
     caption=&quot;Source: Basketball-Reference | By Ethan Peterson&quot;,
     x = &quot;Games Played&quot;,
     y = &quot;3PA&quot;) +
@@ -213,7 +213,7 @@ young &lt;- rookies %&gt;%
     panel.grid.minor = element_blank()
     )</code></pre>
 <p><img src="/2021/11/30/three-nba-trends-to-follow/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
-Jalen Green is on pace to get awfully close to the record. His 115 3PA is ahead of Mitchell’s 104 3PA through 18 games. His 3-point percentage is lackluster, though (an abysmal 28%). The current top 5 rookies all shot above 32%.</p>
+Cunningham is easily on pace to beat Donovan Mitchell. His 122 3PA is ahead of Mitchell’s 97 3PA through 18 games. His 3-point percentage is amendable, though (29%). The current top 5 rookies all shot above 32%.</p>
 <p>Final metric, how do basketball teams win games? Dean Oliver identified what he called the “Four Factors of Basketball Success.” Shooting, turnovers, rebounding, and free throws. He weighted them in order of importance: shooting (40%), turnovers (25%), rebounding (20%), and free throws (15%).</p>
 <p>Shooting is measured with Effective Field Goal Percentage (eFG%), turnovers: Turnover Percentage (TOV%), rebounding: Offensive and Defensive Rebound Percentage (ORB% and DRB%), and free throws by how often a team gets to the line and how often they make them – Free Throws per Field Goal Attempt (FT/FGA).</p>
 <p>Because basketball is an offensive &amp; defensive game, Oliver’s theory can include up to eight factors. Our data has season stats of every NBA championship team since the 1979-80 season (when TOV% was first implemented). I’ll be selecting only the needed stats.</p>
@@ -401,12 +401,12 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
     locations = cells_body(
       rows = Team == &quot;Golden State Warriors&quot;)
     )</code></pre>
-<div id="mjbcjpnmam" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="ilgjovayyq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#mjbcjpnmam .gt_table {
+#ilgjovayyq .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -431,7 +431,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-left-color: #D3D3D3;
 }
 
-#mjbcjpnmam .gt_heading {
+#ilgjovayyq .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -443,7 +443,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#mjbcjpnmam .gt_title {
+#ilgjovayyq .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -453,7 +453,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-bottom-width: 0;
 }
 
-#mjbcjpnmam .gt_subtitle {
+#ilgjovayyq .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -463,13 +463,13 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-top-width: 0;
 }
 
-#mjbcjpnmam .gt_bottom_border {
+#ilgjovayyq .gt_bottom_border {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mjbcjpnmam .gt_col_headings {
+#ilgjovayyq .gt_col_headings {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -484,7 +484,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#mjbcjpnmam .gt_col_heading {
+#ilgjovayyq .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -504,7 +504,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   overflow-x: hidden;
 }
 
-#mjbcjpnmam .gt_column_spanner_outer {
+#ilgjovayyq .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -516,15 +516,15 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-right: 4px;
 }
 
-#mjbcjpnmam .gt_column_spanner_outer:first-child {
+#ilgjovayyq .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mjbcjpnmam .gt_column_spanner_outer:last-child {
+#ilgjovayyq .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mjbcjpnmam .gt_column_spanner {
+#ilgjovayyq .gt_column_spanner {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -536,7 +536,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   width: 100%;
 }
 
-#mjbcjpnmam .gt_group_heading {
+#ilgjovayyq .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -558,7 +558,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   vertical-align: middle;
 }
 
-#mjbcjpnmam .gt_empty_group_heading {
+#ilgjovayyq .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -573,15 +573,15 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   vertical-align: middle;
 }
 
-#mjbcjpnmam .gt_from_md > :first-child {
+#ilgjovayyq .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mjbcjpnmam .gt_from_md > :last-child {
+#ilgjovayyq .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mjbcjpnmam .gt_row {
+#ilgjovayyq .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -600,7 +600,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   overflow-x: hidden;
 }
 
-#mjbcjpnmam .gt_stub {
+#ilgjovayyq .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -612,7 +612,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-left: 12px;
 }
 
-#mjbcjpnmam .gt_summary_row {
+#ilgjovayyq .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -622,7 +622,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-right: 5px;
 }
 
-#mjbcjpnmam .gt_first_summary_row {
+#ilgjovayyq .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -632,7 +632,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-top-color: #D3D3D3;
 }
 
-#mjbcjpnmam .gt_grand_summary_row {
+#ilgjovayyq .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -642,7 +642,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-right: 5px;
 }
 
-#mjbcjpnmam .gt_first_grand_summary_row {
+#ilgjovayyq .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -652,11 +652,11 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-top-color: #D3D3D3;
 }
 
-#mjbcjpnmam .gt_striped {
+#ilgjovayyq .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mjbcjpnmam .gt_table_body {
+#ilgjovayyq .gt_table_body {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -665,7 +665,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-bottom-color: #D3D3D3;
 }
 
-#mjbcjpnmam .gt_footnotes {
+#ilgjovayyq .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -679,13 +679,13 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#mjbcjpnmam .gt_footnote {
+#ilgjovayyq .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#mjbcjpnmam .gt_sourcenotes {
+#ilgjovayyq .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -699,41 +699,41 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#mjbcjpnmam .gt_sourcenote {
+#ilgjovayyq .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#mjbcjpnmam .gt_left {
+#ilgjovayyq .gt_left {
   text-align: left;
 }
 
-#mjbcjpnmam .gt_center {
+#ilgjovayyq .gt_center {
   text-align: center;
 }
 
-#mjbcjpnmam .gt_right {
+#ilgjovayyq .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mjbcjpnmam .gt_font_normal {
+#ilgjovayyq .gt_font_normal {
   font-weight: normal;
 }
 
-#mjbcjpnmam .gt_font_bold {
+#ilgjovayyq .gt_font_bold {
   font-weight: bold;
 }
 
-#mjbcjpnmam .gt_font_italic {
+#ilgjovayyq .gt_font_italic {
   font-style: italic;
 }
 
-#mjbcjpnmam .gt_super {
+#ilgjovayyq .gt_super {
   font-size: 65%;
 }
 
-#mjbcjpnmam .gt_footnote_marks {
+#ilgjovayyq .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

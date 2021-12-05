@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">6 min read</span>
+    <span class="article-duration">5 min read</span>
     
 
     <h1 class="article-title">Looking at the worst games in 2019 football season</h1>
@@ -78,24 +78,9 @@
 
 <p>I am going to be going in depth and looking at the worst games in college football from the 2019 season.</p>
 <p>First I need to load the correct library, tidyverse, and then load my data in, all of the games from the 2019 college football season.</p>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
-<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
-## ✓ tibble  3.1.5     ✓ dplyr   1.0.7
-## ✓ tidyr   1.1.4     ✓ stringr 1.4.0
-## ✓ readr   2.0.2     ✓ forcats 0.5.1</code></pre>
-<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## x dplyr::filter() masks stats::filter()
-## x dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>badlogs &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/badfootballlogs19.csv&quot;)</code></pre>
-<pre><code>## Rows: 1662 Columns: 51</code></pre>
-<pre><code>## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (8): Date, HomeAway, Opponent, Result, TeamFull, TeamURL, Team, Conference
-## dbl (43): Game, PassingCmp, PassingAtt, PassingPct, PassingYds, PassingTD, R...</code></pre>
-<pre><code>## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>library(tidyverse)
+
+badlogs &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/badfootballlogs19.csv&quot;)</code></pre>
 <p>First, I need to fix the Result column. Currently, its data is in W/L format and I want separate columns called Outcome and Score using the separate command.</p>
 <pre class="r"><code>badlogs %&gt;% 
   separate(Result, into=c(&quot;Outcome&quot;, &quot;Score&quot;), sep=&quot; &quot;)</code></pre>
@@ -162,13 +147,6 @@
 <p><img src="/2021/10/25/looking-at-the-worst-games-in-2019-football-season/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>To circle our worstgames, I need the library called “ggalt.” After that, I’ll use the code geom_encircle.</p>
 <pre class="r"><code>library(ggalt)</code></pre>
-<pre><code>## Registered S3 methods overwritten by &#39;ggalt&#39;:
-##   method                  from   
-##   grid.draw.absoluteGrob  ggplot2
-##   grobHeight.absoluteGrob ggplot2
-##   grobWidth.absoluteGrob  ggplot2
-##   grobX.absoluteGrob      ggplot2
-##   grobY.absoluteGrob      ggplot2</code></pre>
 <pre class="r"><code>ggplot() + geom_point(data = notsobadlogs, aes(x = TeamScore, y = OpponentScore), color = &quot;grey&quot;) + 
   geom_point(data = worstgames, aes(x = TeamScore, y = OpponentScore), color = &quot;red&quot;) + 
   geom_encircle(data = worstgames, aes(x = TeamScore, y = OpponentScore), s_shape=0.1, expand=0.045, colour=&quot;black&quot;)</code></pre>

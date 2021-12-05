@@ -76,7 +76,7 @@
 <script src="/2021/12/05/three-nba-trends-to-follow/index_files/header-attrs/header-attrs.js"></script>
 
 
-<p>The NBA is in the midst of a gameplay method shift. The 3-point shot is being attempted at record high numbers, and virtually every other shot at record lows. I’m interested to see how 3-point attempts (3PA) have changed in recent years and if there’s been an effect on rookies becoming more long-ball focused. As an unrelated bonus, I’m going to look at <a href="https://www.basketball-reference.com/about/factors.html">Dean Oliver</a>’s “Four Factors of Basketball Success” when compared to championship teams.</p>
+<p>The NBA is in the midst of a game play method shift. The 3-point shot is being attempted at record high numbers, and virtually every other shot at record lows. I’m interested to see how 3-point attempts (3PA) have changed in recent years and if there’s been an effect on rookies becoming more long-ball focused. As an unrelated bonus, I’m going to look at <a href="https://www.basketball-reference.com/about/factors.html">Dean Oliver</a>’s “Four Factors of Basketball Success” when compared to championship teams.</p>
 <p>I’ll begin by loading <code>tidyverse</code>, <code>ggrepel</code>, and <code>gt</code>.</p>
 <pre class="r"><code>library(tidyverse)
 library(ggrepel)
@@ -114,15 +114,15 @@ threepoint %&gt;%
   geom_line(data = GSW, aes(x = Season, y = `3Pgame`, group = Team), color = &quot;#1D428A&quot;, alpha = 0.3, linetype = &quot;twodash&quot;) +
   geom_line(data = HOU, aes(x = Season, y = `3Pgame`, group = Team), color = &quot;#CE1141&quot;, alpha = 0.3, linetype = &quot;dashed&quot;) +
   geom_line(data = MIN, aes(x = Season, y = `3Pgame`, group = Team), color = &quot;#78BE20&quot;, alpha = 1) +
-#Team name labels
+#Team names
   geom_text(aes(x = 2018.5, y = 44.8, fontface = 2), label = &quot;Rockets&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = 18) +
   geom_text(aes(x = 2018.5, y = 32.7, fontface = 2), label = &quot;Warriors&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 32) +
   geom_text(aes(x = 2018.5, y = 26.7, fontface = 2), label = &quot;Timberwolves&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 35) +
-#2015 3PA rankings labels
+#2015 3PA rankings
   geom_text(aes(x = 2015.2, y = 33.3), label = &quot;1st&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = -10) +
   geom_text(aes(x = 2015.2, y = 26.8), label = &quot;4th&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 25) +
   geom_text(aes(x = 2015.2, y = 16.1), label = &quot;30th&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 8) +
-#2022 3PA rankings labels  
+#2022 3PA rankings  
   geom_text(aes(x = 2021.84, y = 37), label = &quot;9th&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = -26) +
   geom_text(aes(x = 2021.84, y = 39.8), label = &quot;3rd&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 15) +
   geom_text(aes(x = 2021.84, y = 42.3), label = &quot;1st&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 28) +
@@ -222,7 +222,7 @@ champs &lt;- champs %&gt;%
 <p>A table will showcase the top 10 championship teams based on Dean Oliver’s success factors. I’m going to mutate and multiply the eight factors by 100 so I have a readable percentage. Then mutate a net value for each category (Net eFG%, Net TOV%, Net ORB%, and Net FT_FGA). This is so we can accurately see if the teams out-performed their opponents in each category. Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes each net value and multiplies it by its respective weight that Oliver listed, then adding them together.</p>
 <pre class="r"><code>champs %&gt;%
   mutate(
-    `eFG%` = (`eFG%` * 100),           #shifting decimal point so its on a 1-100 scale
+    `eFG%` = (`eFG%` * 100),      #shifting decimal point so its on a 1-100 scale
     `OppeFG%` = (`OppeFG%` * 100),
     `TOV%` = (`TOV%` * 100),
     `OppTOV%` = (`OppTOV%` * 100),
@@ -355,7 +355,7 @@ champs &lt;- champs %&gt;%
       rows = c(5)
     )
   ) %&gt;%
-#Adding Team colors and fills
+#Adding Team colors to text
   tab_style(
     style = list(
       cell_text(color = &quot;#CE1141&quot;)
@@ -398,12 +398,12 @@ champs &lt;- champs %&gt;%
     locations = cells_body(
       rows = Team == &quot;Golden State Warriors&quot;)
     )</code></pre>
-<div id="mkbdfscdjl" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="mffvbgxyra" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#mkbdfscdjl .gt_table {
+#mffvbgxyra .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -428,7 +428,7 @@ champs &lt;- champs %&gt;%
   border-left-color: #D3D3D3;
 }
 
-#mkbdfscdjl .gt_heading {
+#mffvbgxyra .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -440,7 +440,7 @@ champs &lt;- champs %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#mkbdfscdjl .gt_title {
+#mffvbgxyra .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -450,7 +450,7 @@ champs &lt;- champs %&gt;%
   border-bottom-width: 0;
 }
 
-#mkbdfscdjl .gt_subtitle {
+#mffvbgxyra .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -460,13 +460,13 @@ champs &lt;- champs %&gt;%
   border-top-width: 0;
 }
 
-#mkbdfscdjl .gt_bottom_border {
+#mffvbgxyra .gt_bottom_border {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#mkbdfscdjl .gt_col_headings {
+#mffvbgxyra .gt_col_headings {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -481,7 +481,7 @@ champs &lt;- champs %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#mkbdfscdjl .gt_col_heading {
+#mffvbgxyra .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -501,7 +501,7 @@ champs &lt;- champs %&gt;%
   overflow-x: hidden;
 }
 
-#mkbdfscdjl .gt_column_spanner_outer {
+#mffvbgxyra .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -513,15 +513,15 @@ champs &lt;- champs %&gt;%
   padding-right: 4px;
 }
 
-#mkbdfscdjl .gt_column_spanner_outer:first-child {
+#mffvbgxyra .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#mkbdfscdjl .gt_column_spanner_outer:last-child {
+#mffvbgxyra .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#mkbdfscdjl .gt_column_spanner {
+#mffvbgxyra .gt_column_spanner {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -533,7 +533,7 @@ champs &lt;- champs %&gt;%
   width: 100%;
 }
 
-#mkbdfscdjl .gt_group_heading {
+#mffvbgxyra .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -555,7 +555,7 @@ champs &lt;- champs %&gt;%
   vertical-align: middle;
 }
 
-#mkbdfscdjl .gt_empty_group_heading {
+#mffvbgxyra .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -570,15 +570,15 @@ champs &lt;- champs %&gt;%
   vertical-align: middle;
 }
 
-#mkbdfscdjl .gt_from_md > :first-child {
+#mffvbgxyra .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#mkbdfscdjl .gt_from_md > :last-child {
+#mffvbgxyra .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#mkbdfscdjl .gt_row {
+#mffvbgxyra .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -597,7 +597,7 @@ champs &lt;- champs %&gt;%
   overflow-x: hidden;
 }
 
-#mkbdfscdjl .gt_stub {
+#mffvbgxyra .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -609,7 +609,7 @@ champs &lt;- champs %&gt;%
   padding-left: 12px;
 }
 
-#mkbdfscdjl .gt_summary_row {
+#mffvbgxyra .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -619,7 +619,7 @@ champs &lt;- champs %&gt;%
   padding-right: 5px;
 }
 
-#mkbdfscdjl .gt_first_summary_row {
+#mffvbgxyra .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -629,7 +629,7 @@ champs &lt;- champs %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#mkbdfscdjl .gt_grand_summary_row {
+#mffvbgxyra .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -639,7 +639,7 @@ champs &lt;- champs %&gt;%
   padding-right: 5px;
 }
 
-#mkbdfscdjl .gt_first_grand_summary_row {
+#mffvbgxyra .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -649,11 +649,11 @@ champs &lt;- champs %&gt;%
   border-top-color: #D3D3D3;
 }
 
-#mkbdfscdjl .gt_striped {
+#mffvbgxyra .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#mkbdfscdjl .gt_table_body {
+#mffvbgxyra .gt_table_body {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -662,7 +662,7 @@ champs &lt;- champs %&gt;%
   border-bottom-color: #D3D3D3;
 }
 
-#mkbdfscdjl .gt_footnotes {
+#mffvbgxyra .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -676,13 +676,13 @@ champs &lt;- champs %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#mkbdfscdjl .gt_footnote {
+#mffvbgxyra .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#mkbdfscdjl .gt_sourcenotes {
+#mffvbgxyra .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -696,41 +696,41 @@ champs &lt;- champs %&gt;%
   border-right-color: #D3D3D3;
 }
 
-#mkbdfscdjl .gt_sourcenote {
+#mffvbgxyra .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#mkbdfscdjl .gt_left {
+#mffvbgxyra .gt_left {
   text-align: left;
 }
 
-#mkbdfscdjl .gt_center {
+#mffvbgxyra .gt_center {
   text-align: center;
 }
 
-#mkbdfscdjl .gt_right {
+#mffvbgxyra .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#mkbdfscdjl .gt_font_normal {
+#mffvbgxyra .gt_font_normal {
   font-weight: normal;
 }
 
-#mkbdfscdjl .gt_font_bold {
+#mffvbgxyra .gt_font_bold {
   font-weight: bold;
 }
 
-#mkbdfscdjl .gt_font_italic {
+#mffvbgxyra .gt_font_italic {
   font-style: italic;
 }
 
-#mkbdfscdjl .gt_super {
+#mffvbgxyra .gt_super {
   font-size: 65%;
 }
 
-#mkbdfscdjl .gt_footnote_marks {
+#mffvbgxyra .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;

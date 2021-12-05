@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.88.1" />
+
+
+<title>Three NBA trends to follow - Ethan Peterson&#39;s Site</title>
+<meta property="og:title" content="Three NBA trends to follow - Ethan Peterson&#39;s Site">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://ethanreedpeterson.github.io/">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/ethanpete_34">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">15 min read</span>
+    
+
+    <h1 class="article-title">Three NBA trends to follow</h1>
+
+    
+    <span class="article-date">2021-12-05</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/12/05/three-nba-trends-to-follow/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>The NBA is in the prime of a fundamental strategy revolution. The 3-point shot is being attempted at record high numbers, and virtually every other shot at record lows. I’m interested to see how 3-point attempts (3PA) have changed in recent years and if rookies are becoming more long-ball focused. As an unrelated bonus, I’m going to look at <a href="https://www.basketball-reference.com/about/factors.html">Dean Oliver</a>’s “Four Factors of Basketball Success” when compared to some of the NBA’s championship teams.</p>
+<p>I’ll begin by loading <code>tidyverse</code>, <code>ggrepel</code>, and <code>gt</code>.</p>
+<pre class="r"><code>library(tidyverse)
+library(ggrepel)
+library(gt)</code></pre>
+<p>First up: 3-point attempts (3PA) per game by each team.
+It’s obvious that Stephen Curry catapulted 3-point shooting to where it is today. I’m interested to see how his voluminous 3-point shooting has affected the league since his Finals-winning 2014-15 season (shot 44% on 8.1 3PA).</p>
+<p>Time to load the data.</p>
+<pre class="r"><code>threepoint &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/threepointattempts.csv&quot;)</code></pre>
+<p>I’m only interested in the 3-point stats. Furthermore, I have to mutate two fields. <strong>3Ppct</strong> (multiplying by 100 to get a readable percentage) and <strong>3Pgame</strong> (divides 3PA by games to get 3PA/game).</p>
+<pre class="r"><code>threepoint &lt;- threepoint %&gt;%
+  select(Season, Team, G, `3P`, `3PA`, `3Ppct`) %&gt;%
+  mutate(
+    `3Ppct` = ((`3Ppct`) * 100),
+    `3Pgame` = ((`3PA` / G))) -&gt; threepoint </code></pre>
+<p>I need each team’s 3-point statistics, so I’m making a new data frame called <strong>nba</strong>. This way each team has a respective line on my chart.</p>
+<pre class="r"><code>nba &lt;- c(&quot;Golden State Warriors&quot;, &quot;Los Angeles Lakers&quot;, &quot;Los Angeles Clippers&quot;, &quot;Sacramento Kings&quot;, &quot;Phoenix Suns&quot;,
+         &quot;Dallas Mavericks&quot;, &quot;Memphis Grizzlies&quot;, &quot;San Antonio Spurs&quot;, &quot;New Orleans Pelicans&quot;, &quot;Houston Rockets&quot;,
+         &quot;Utah Jazz&quot;, &quot;Denver Nuggets&quot;, &quot;Portland Trail Blazers&quot;, &quot;Minnesota Timberwolves&quot;, &quot;Oklahoma City Thunder&quot;,
+         &quot;Philadelphia 76ers&quot;, &quot;Brooklyn Nets&quot;, &quot;New York Knicks&quot;, &quot;Boston Celtics&quot;, &quot;Toronto Raptors&quot;,
+         &quot;Milwaukee Bucks&quot;, &quot;Indiana Pacers&quot;, &quot;Chicago Bulls&quot;, &quot;Cleveland Cavaliers&quot;, &quot;Detroit Pistons&quot;,
+         &quot;Atlanta Hawks&quot;, &quot;Miami Heat&quot;, &quot;Washington Wizards&quot;, &quot;Charlotte Hornets&quot;, &quot;Orlando Magic&quot;)
+
+threepoint &lt;- threepoint %&gt;% 
+  filter(Team %in% nba)</code></pre>
+<p>I want to single out three teams in particular. (1) Golden State Warriors, because of their high volume 3-point shooters, Steph Curry and Klay Thompson. (2) Houston Rockets, thanks in large part to James Harden and his insane 11.9 3PA per game during a three-year stretch. (3) The most important team, the Minnesota Timberwolves… you’ll see why.</p>
+<pre class="r"><code>threepoint %&gt;%
+  filter(Team == &quot;Golden State Warriors&quot;) -&gt; GSW
+threepoint %&gt;%
+  filter(Team == &quot;Houston Rockets&quot;) -&gt; HOU
+threepoint %&gt;%
+  filter(Team == &quot;Minnesota Timberwolves&quot;) -&gt; MIN</code></pre>
+<p>Let’s chart each team’s 3PA per game from the 2014-15 season to today, including this season so far.</p>
+<pre class="r"><code>ggplot() + 
+  geom_line(data = threepoint, aes(x = Season, y = `3Pgame`, group = Team), color = &quot;grey&quot;, alpha = 0.2) +
+  geom_line(data = GSW, aes(x = Season, y = `3Pgame`, group = Team), color = &quot;#1D428A&quot;, alpha = 0.3, linetype = &quot;twodash&quot;) +
+  geom_line(data = HOU, aes(x = Season, y = `3Pgame`, group = Team), color = &quot;#CE1141&quot;, alpha = 0.3, linetype = &quot;dashed&quot;) +
+  geom_line(data = MIN, aes(x = Season, y = `3Pgame`, group = Team), color = &quot;#78BE20&quot;, alpha = 1) +
+#Team name labels
+  geom_text(aes(x = 2018.5, y = 44.8, fontface = 2), 
+            label = &quot;Rockets&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = 18) +
+  geom_text(aes(x = 2018.5, y = 32.7, fontface = 2), 
+            label = &quot;Warriors&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 32) +
+  geom_text(aes(x = 2018.5, y = 26.7, fontface = 2), 
+            label = &quot;Timberwolves&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 35) +
+#2015 3PA rankings labels
+  geom_text(aes(x = 2015.2, y = 33.3), label = &quot;1st&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = -10) +
+  geom_text(aes(x = 2015.2, y = 26.8), label = &quot;4th&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 25) +
+  geom_text(aes(x = 2015.2, y = 16.1), label = &quot;30th&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 8) +
+#2022 3PA rankings labels  
+  geom_text(aes(x = 2021.84, y = 37), label = &quot;9th&quot;, color = &quot;#CE1141&quot;, size = 3, alpha = 0.4, angle = -26) +
+  geom_text(aes(x = 2021.84, y = 39.8), label = &quot;3rd&quot;, color = &quot;#1D428A&quot;, size = 3, alpha = 0.4, angle = 15) +
+  geom_text(aes(x = 2021.84, y = 42.3), label = &quot;1st&quot;, color = &quot;#78BE20&quot;, size = 3, angle = 28) +
+  scale_y_continuous(breaks = seq(0,50, by = 10), limits = c(14, 50)) + 
+  scale_x_continuous(breaks = seq(2015,2022, by = 1), expand = c(0,0.17)) +
+  labs(
+    title = &quot;How many 3PA per game are teams taking each year?&quot;,
+    subtitle = &quot;Three point attempts have been climbing league-wide, but no team has skyrocketed quite like the T-Wolves.&quot;,
+    caption=&quot;Source: Basketball-Reference | By Ethan Peterson&quot;,
+    x = &quot;Season&quot;,
+    y = &quot;3PA per game&quot;) + 
+  theme_bw() +
+  theme(
+    plot.title = element_text(size = 16, face = &quot;bold&quot;),
+    axis.title = element_text(size = 9), 
+    plot.subtitle = element_text(size = 9.5), 
+    plot.caption = element_text(size = 8, face = &quot;bold.italic&quot;),
+    panel.grid.minor = element_blank()
+    ) </code></pre>
+<p><img src="/2021/12/05/three-nba-trends-to-follow/index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+After being 30th in 2014-15 (14.9 3PA/game), Minnesota is 1st this season (42.9 3PA/game) – a <strong>287% increase</strong>!</p>
+<p>Golden State, was always towards the top, but Klay and Steph’s injuries in 2019-20 understandably hurt their production.</p>
+<p>The Rockets, finished 1st in five of the last seven seasons. James Harden’s time in H-town led to an absolutely insane amount of shots taken from behind the arc. The Rockets set an unfathomable record 45 3PA/game in back-to-back seasons. With Harden now gone, their attempts have been slashed.</p>
+<p>On to player 3-point shooting. The NBA’s young talent has noticeably modeled their game around the 3-point shot. In NBA history, 11 rookies have logged 400+ 3PA. Eight of them debuted after Curry’s rookie season. The Curry effect? Possibly.</p>
+<p>Cade Cunningham, currently second in total 3PA and first in 3PA/game for rookies, will be compared to the current rookies in the top 5 for total 3PA. Despite being second in total 3PA right now, he is on a better trajectory to attempt more threes.</p>
+<pre class="r"><code>rookies &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/nbathreepoint.csv&quot;) </code></pre>
+<p>The current rookie record is held by Donovan Mitchell (550 3PA). As of December 5, 2021, Cade Cunningham is 2nd among rookies with 122 3PA in 18 games (Chris Duarte is 1st. but is averaging 5.5 3PA to Cunningham’s 7.2). Is he on pace to pass Mitchell’s record?</p>
+<pre class="r"><code>cade &lt;- rookies %&gt;%
+  filter(Player == &quot;Cade Cunningham&quot;) %&gt;% 
+  group_by(Player) %&gt;% 
+  mutate(CumThreePoint = cumsum(`3PA`))
+
+edwards &lt;- rookies %&gt;%
+  filter(Player == &quot;Anthony Edwards&quot;) %&gt;% 
+  group_by(Player) %&gt;% 
+  mutate(CumThreePoint = cumsum(`3PA`))
+
+mitchell &lt;- rookies %&gt;%
+  filter(Player == &quot;Donovan Mitchell&quot;) %&gt;% 
+  group_by(Player) %&gt;% 
+  mutate(CumThreePoint = cumsum(`3PA`))
+
+lillard &lt;- rookies %&gt;%
+  filter(Player == &quot;Damian Lillard&quot;) %&gt;% 
+  group_by(Player) %&gt;% 
+  mutate(CumThreePoint = cumsum(`3PA`))
+
+doncic &lt;- rookies %&gt;%
+  filter(Player == &quot;Luka Dončić&quot;) %&gt;% 
+  group_by(Player) %&gt;% 
+  mutate(CumThreePoint = cumsum(`3PA`))
+
+young &lt;- rookies %&gt;%
+  filter(Player == &quot;Trae Young&quot;) %&gt;% 
+  mutate(CumThreePoint = cumsum(`3PA`))</code></pre>
+<p>Using a step chart, I’ll look at each player’s cumulative 3PA, focusing on Jalen Green. <em>Do note: we’re only 21 games into the season.</em></p>
+<pre class="r"><code>ggplot() + 
+#Player cumulative 3PA
+  geom_step(data = mitchell, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#00471B&quot;, alpha = 0.6) +
+  geom_step(data = edwards, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#78BE20&quot;, alpha = 0.4) +
+  geom_step(data = lillard, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#E03A3E&quot;, alpha = 0.4) +
+  geom_step(data = doncic, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#00538C&quot;, alpha = 0.4) +
+  geom_step(data = young, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#C1D32F&quot;, alpha = 0.4) +
+  geom_step(data = cade, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#1D42BA&quot;, alpha = 1) +
+#Player labels  
+  geom_text(aes(x = 10.5, y = 95), label = &quot;Cade Cunningham&quot;, color = &quot;#1D42BA&quot;, size = 3, alpha = 1, angle = 33) +
+  geom_text(aes(x = 78.5, y = 560), label = &quot;Donovan Mitchell&quot;, color = &quot;#00471B&quot;, size = 3, alpha = 0.6) +
+  geom_text(aes(x = 35, y = 160), label = &quot;Trae Young&quot;, color = &quot;#C1D32F&quot;, size = 3, alpha = 0.5, angle = 14) +
+  geom_text(aes(x = 43, y = 305), label = &quot;Anthony Edwards&quot;, color = &quot;#78BE20&quot;, size = 3, alpha = 0.5, angle = 34) +
+  geom_text(aes(x = 76, y = 483), label = &quot;Damian Lillard&quot;, color = &quot;#E03A3E&quot;, size = 3, alpha = 0.3, angle = 27) +
+  geom_text(aes(x = 59, y = 435), label = &quot;Luka Dončić&quot;, color = &quot;#00538C&quot;, size = 3, alpha = 0.3, angle = 35) +
+  theme_minimal() +
+  scale_y_continuous(breaks = seq(0,500, by = 100)) +
+  scale_x_continuous(breaks = seq(0,90, by = 10)) +
+  labs(
+    title = &quot;Rookie 3-point attempt record to be eclipsed?&quot;,
+    subtitle = &quot;Pistons PG Cade Cunningham is on pace to attempt the most threes by a rookie in NBA history.&quot;,
+    caption=&quot;Source: Basketball-Reference | By Ethan Peterson&quot;,
+    x = &quot;Games Played&quot;,
+    y = &quot;3PA&quot;) +
+  theme(
+    plot.title = element_text(size = 16, face = &quot;bold&quot;),
+    axis.title = element_text(size = 9), 
+    plot.subtitle = element_text(size = 10), 
+    plot.caption = element_text(size = 8, face = &quot;bold.italic&quot;),
+    panel.grid.minor = element_blank()
+    )</code></pre>
+<p><img src="/2021/12/05/three-nba-trends-to-follow/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+Cunningham is evidently on pace to beat Donovan Mitchell. Through 17 games, his 122 3PA is ahead of Mitchell’s 97. His 3P% is amendable, though (29%). The current top 5 rookies all shot above 32%.</p>
+<p>Final metric, how do basketball teams win games? <a href="https://www.basketball-reference.com/about/factors.html">Dean Oliver</a> identified what he called the “Four Factors of Basketball Success.” Shooting, turnovers, rebounding, and free throws. He weighted them in order of importance: shooting (40%), turnovers (25%), rebounding (20%), and free throws (15%).</p>
+<p>Shooting is measured with Effective Field Goal Percentage (eFG%), turnovers: Turnover Percentage (TOV%), rebounding: Offensive and Defensive Rebound Percentage (ORB% and DRB%), and free throws by how often a team gets to the line and how often they make them – Free Throws per Field Goal Attempt (FT/FGA).</p>
+<p>Oliver’s theory can include up to eight factors (offense &amp; defense metrics). I’ll look at season stats of every NBA championship team since the 1979-80 season 3and select the four (technically eight) factors.</p>
+<pre class="r"><code>champs &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/champs.csv&quot;)
+
+champs &lt;- champs %&gt;%
+  select(Season, Team, W, L, Pct, `eFG%`, `TOV%`, `ORB%`, FT_FGA, `OppeFG%`, `OppTOV%`, `OppORB%`, OppFT_FGA)</code></pre>
+<p>A table is how I’ll showcase the top 10 Finals champs based on Dean Oliver’s success factors. I’m going to mutate and multiply the eight factors by 100 so I have a readable percentage. Then mutate a net value for each category (Net eFG%, Net TOV%, Net ORB%, and Net FT_FGA). This is so we can accurately see if the teams out-performed their opponents in each category. Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes each net value and multiplies it by its respective weight that Oliver listed, then adding them together.</p>
+<pre class="r"><code>champs %&gt;%
+  mutate(
+    `eFG%` = (`eFG%` * 100),           #shifting decimal point so its on a 1-100 scale
+    `OppeFG%` = (`OppeFG%` * 100),
+    `TOV%` = (`TOV%` * 100),
+    `OppTOV%` = (`OppTOV%` * 100),
+    `ORB%` = (`ORB%` * 100),
+    `OppORB%` = (`OppORB%` * 100),
+     FT_FGA = (FT_FGA * 100),
+     OppFT_FGA = (OppFT_FGA * 100), 
+    `Net_eFG%` = (`eFG%` - `OppeFG%`),      #Net values of each factor
+    `Net_TOV%` = (`OppTOV%` - `TOV%`),
+    `Net_ORB%` = (`ORB%` - `OppORB%`),
+     Net_FT_FGA = (FT_FGA - OppFT_FGA),
+     FourFactorScore = (`Net_eFG%` * .40) + (`Net_TOV%` * .25) + (`Net_ORB%` * .20) + (Net_FT_FGA * .15)) -&gt; champsstats</code></pre>
+<p>I’ll select the W/L records and net statistics.</p>
+<pre class="r"><code>champsstats %&gt;% 
+  select(Season, Team, W, L, Pct, `Net_eFG%`, `Net_TOV%`, `Net_ORB%`, Net_FT_FGA, FourFactorScore) -&gt; champstable</code></pre>
+<p>Which NBA champion fit Dean Oliver’s model the best?</p>
+<pre class="r"><code>champstable %&gt;%
+  group_by() %&gt;%
+  arrange(desc(FourFactorScore)) %&gt;% 
+  top_n(10) %&gt;%
+  gt() %&gt;%
+  cols_label(
+    `Net_eFG%` = &quot;Net eFG%&quot;,
+    `Net_TOV%` = &quot;Net TOV%&quot;,
+    `Net_ORB%` = &quot;Net ORB%&quot;,
+    `Net_FT_FGA` = &quot;Net FT/FGA&quot;,
+    FourFactorScore = &quot;Four Factor Score&quot;
+  ) %&gt;%
+  cols_align(
+    align = &quot;center&quot;,
+    columns = -Team &amp; -Season
+    ) %&gt;%
+  tab_header(
+    title = &quot;Top 10 championship teams by Four Factor Score&quot;,
+    subtitle = &quot;MJ and the Bulls dominated Dean Oliver&#39;s theory of basketball success.&quot;
+  ) %&gt;% tab_style(
+    style = cell_text(color = &quot;black&quot;, weight = &quot;bold&quot;, align = &quot;left&quot;),
+    locations = cells_title(&quot;title&quot;)
+  ) %&gt;% tab_style(
+    style = cell_text(color = &quot;black&quot;, align = &quot;left&quot;),
+    locations = cells_title(&quot;subtitle&quot;)
+  ) %&gt;%
+  tab_source_note(
+    source_note = md(&quot;**By:** Ethan Peterson  |  **Source:** [Basketball-Reference](https://www.basketball-reference.com/leagues/)&quot;)
+  ) %&gt;%
+  tab_style(
+     locations = cells_column_labels(columns = everything()),
+     style = list(
+       cell_borders(sides = &quot;bottom&quot;, weight = px(3)),
+       cell_text(weight = &quot;bold&quot;, size=12)) 
+     ) %&gt;%
+  tab_style(
+     locations = cells_column_labels(columns = FourFactorScore),
+     style = list(
+       cell_text(weight = &quot;bold&quot;, size=12))
+  ) %&gt;%
+  opt_row_striping() %&gt;% 
+  opt_table_lines(&quot;none&quot;) %&gt;%
+  tab_style(
+    style = list(
+      cell_borders(
+        sides = &quot;left&quot;,
+        color = &quot;black&quot;,
+        weight = px(2))
+    ),
+    locations = list(
+      cells_body(
+        columns = c(FourFactorScore, Team, W, `Net_eFG%`, Season)))
+  ) %&gt;%
+  tab_style(
+    style = list(
+      cell_borders(
+        sides = &quot;right&quot;,
+        color = &quot;black&quot;,
+        weight = px(2))
+    ),
+    locations = list(
+      cells_body(
+        columns = c(FourFactorScore)))
+  ) %&gt;%
+  tab_style(
+    style = list(
+      cell_borders(
+        sides = &quot;bottom&quot;,
+        color = &quot;black&quot;,
+        weight = px(2))
+    ),
+    locations = list(
+      cells_body(
+        rows = c(10)))
+  ) %&gt;% 
+    fmt_number(
+    columns = c(FourFactorScore),
+    decimals = 2
+    ) %&gt;% 
+#Adding bold to the highest value in each column
+  tab_style(
+    style = list(
+      cell_text(weight = &quot;bolder&quot;, style = &quot;oblique&quot;)
+      ),
+    locations = cells_body(
+      columns = `Net_eFG%`,
+      rows = c(10)
+    )
+  ) %&gt;%                              
+  tab_style(
+    style = list(
+      cell_text(weight = &quot;bolder&quot;, style = &quot;oblique&quot;)
+      ),
+    locations = cells_body(
+      columns = `Net_TOV%`,
+      rows = c(1)
+    )
+  ) %&gt;%
+  tab_style(
+    style = list(
+      cell_text(weight = &quot;bolder&quot;, style = &quot;oblique&quot;)
+      ),
+    locations = cells_body(
+      columns = `Net_ORB%`,
+      rows = c(1)
+    )
+  ) %&gt;%
+  tab_style(
+    style = list(
+      cell_text(weight = &quot;bolder&quot;, style = &quot;oblique&quot;)
+      ),
+    locations = cells_body(
+      columns = Net_FT_FGA,
+      rows = c(5)
+    )
+  ) %&gt;%
+#Adding Team colors and fills
+  tab_style(
+    style = list(
+      cell_text(color = &quot;#CE1141&quot;)
+      ),
+    locations = cells_body(
+      rows = Team == &quot;Chicago Bulls&quot;)
+    ) %&gt;%
+  tab_style(
+    style = list(
+      cell_text(color = &quot;#000000&quot;)
+      ),
+    locations = cells_body(
+      rows = Team == &quot;San Antonio Spurs&quot;)
+    ) %&gt;%
+  tab_style(
+    style = list(
+      cell_text(color = &quot;#552583&quot;)
+      ),
+    locations = cells_body(
+      rows = Team == &quot;Los Angeles Lakers&quot;) 
+    ) %&gt;%
+  tab_style(
+    style = list(
+      cell_text(color = &quot;#007A33&quot;)
+      ),
+    locations = cells_body(
+      rows = Team == &quot;Boston Celtics&quot;)
+    ) %&gt;%
+  tab_style(
+    style = list(
+      cell_text(color = &quot;#006BB6&quot;)
+      ),
+    locations = cells_body(
+      rows = Team == &quot;Philadelphia 76ers&quot;)
+    ) %&gt;%
+  tab_style(
+    style = list(
+      cell_text(color = &quot;#FFC72C&quot;)
+      ),
+    locations = cells_body(
+      rows = Team == &quot;Golden State Warriors&quot;)
+    )</code></pre>
+<div id="onomdoayxh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#onomdoayxh .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: none;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#onomdoayxh .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#onomdoayxh .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#onomdoayxh .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#onomdoayxh .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#onomdoayxh .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#onomdoayxh .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#onomdoayxh .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#onomdoayxh .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#onomdoayxh .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#onomdoayxh .gt_column_spanner {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#onomdoayxh .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#onomdoayxh .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#onomdoayxh .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#onomdoayxh .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#onomdoayxh .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: none;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#onomdoayxh .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#onomdoayxh .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#onomdoayxh .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#onomdoayxh .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#onomdoayxh .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#onomdoayxh .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#onomdoayxh .gt_table_body {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#onomdoayxh .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#onomdoayxh .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#onomdoayxh .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#onomdoayxh .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#onomdoayxh .gt_left {
+  text-align: left;
+}
+
+#onomdoayxh .gt_center {
+  text-align: center;
+}
+
+#onomdoayxh .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#onomdoayxh .gt_font_normal {
+  font-weight: normal;
+}
+
+#onomdoayxh .gt_font_bold {
+  font-weight: bold;
+}
+
+#onomdoayxh .gt_font_italic {
+  font-style: italic;
+}
+
+#onomdoayxh .gt_super {
+  font-size: 65%;
+}
+
+#onomdoayxh .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="10" class="gt_heading gt_title gt_font_normal" style="color: #000000; text-align: left; font-weight: bold;">Top 10 championship teams by Four Factor Score</th>
+    </tr>
+    <tr>
+      <th colspan="10" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="color: #000000; text-align: left;">MJ and the Bulls dominated Dean Oliver's theory of basketball success.</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">Season</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">Team</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">W</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">L</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">Pct</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">Net eFG%</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">Net TOV%</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">Net ORB%</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">Net FT/FGA</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">Four Factor Score</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">1995-96</td>
+<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">Chicago Bulls</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">72</td>
+<td class="gt_row gt_center" style="color: #CE1141;">10</td>
+<td class="gt_row gt_center" style="color: #CE1141;">0.878</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">3.5</td>
+<td class="gt_row gt_center" style="font-style: oblique; font-weight: bolder; color: #CE1141;">3.0</td>
+<td class="gt_row gt_center" style="font-style: oblique; font-weight: bolder; color: #CE1141;">8.0</td>
+<td class="gt_row gt_center" style="color: #CE1141;">-0.5</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #CE1141;">3.68</td></tr>
+    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">1996-97</td>
+<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">Chicago Bulls</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">69</td>
+<td class="gt_row gt_center gt_striped" style="color: #CE1141;">13</td>
+<td class="gt_row gt_center gt_striped" style="color: #CE1141;">0.841</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">4.0</td>
+<td class="gt_row gt_center gt_striped" style="color: #CE1141;">2.3</td>
+<td class="gt_row gt_center gt_striped" style="color: #CE1141;">5.2</td>
+<td class="gt_row gt_center gt_striped" style="color: #CE1141;">0.3</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #CE1141;">3.26</td></tr>
+    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">1991-92</td>
+<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">Chicago Bulls</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">67</td>
+<td class="gt_row gt_center" style="color: #CE1141;">15</td>
+<td class="gt_row gt_center" style="color: #CE1141;">0.817</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #CE1141;">4.2</td>
+<td class="gt_row gt_center" style="color: #CE1141;">2.3</td>
+<td class="gt_row gt_center" style="color: #CE1141;">4.4</td>
+<td class="gt_row gt_center" style="color: #CE1141;">0.2</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #CE1141;">3.17</td></tr>
+    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">2007-08</td>
+<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">Boston Celtics</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">66</td>
+<td class="gt_row gt_center gt_striped" style="color: #007A33;">16</td>
+<td class="gt_row gt_center gt_striped" style="color: #007A33;">0.805</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">6.5</td>
+<td class="gt_row gt_center gt_striped" style="color: #007A33;">0.5</td>
+<td class="gt_row gt_center gt_striped" style="color: #007A33;">1.0</td>
+<td class="gt_row gt_center gt_striped" style="color: #007A33;">1.4</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #007A33;">3.14</td></tr>
+    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">1998-99</td>
+<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">San Antonio Spurs</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">37</td>
+<td class="gt_row gt_center" style="color: #000000;">13</td>
+<td class="gt_row gt_center" style="color: #000000;">0.740</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #000000;">5.6</td>
+<td class="gt_row gt_center" style="color: #000000;">-0.8</td>
+<td class="gt_row gt_center" style="color: #000000;">-0.1</td>
+<td class="gt_row gt_center" style="font-style: oblique; font-weight: bolder; color: #000000;">6.1</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #000000;">2.94</td></tr>
+    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #006BB6;">1982-83</td>
+<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #006BB6;">Philadelphia 76ers</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #006BB6;">65</td>
+<td class="gt_row gt_center gt_striped" style="color: #006BB6;">17</td>
+<td class="gt_row gt_center gt_striped" style="color: #006BB6;">0.793</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #006BB6;">3.7</td>
+<td class="gt_row gt_center gt_striped" style="color: #006BB6;">-0.5</td>
+<td class="gt_row gt_center gt_striped" style="color: #006BB6;">3.3</td>
+<td class="gt_row gt_center gt_striped" style="color: #006BB6;">5.6</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #006BB6;">2.85</td></tr>
+    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">1999-00</td>
+<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">Los Angeles Lakers</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">67</td>
+<td class="gt_row gt_center" style="color: #552583;">15</td>
+<td class="gt_row gt_center" style="color: #552583;">0.817</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">4.1</td>
+<td class="gt_row gt_center" style="color: #552583;">0.7</td>
+<td class="gt_row gt_center" style="color: #552583;">3.7</td>
+<td class="gt_row gt_center" style="color: #552583;">1.9</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #552583;">2.84</td></tr>
+    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">1986-87</td>
+<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">Los Angeles Lakers</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">65</td>
+<td class="gt_row gt_center gt_striped" style="color: #552583;">17</td>
+<td class="gt_row gt_center gt_striped" style="color: #552583;">0.793</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #552583;">5.2</td>
+<td class="gt_row gt_center gt_striped" style="color: #552583;">-0.2</td>
+<td class="gt_row gt_center gt_striped" style="color: #552583;">0.4</td>
+<td class="gt_row gt_center gt_striped" style="color: #552583;">4.8</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #552583;">2.83</td></tr>
+    <tr><td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">1985-86</td>
+<td class="gt_row gt_left" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">Boston Celtics</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">67</td>
+<td class="gt_row gt_center" style="color: #007A33;">15</td>
+<td class="gt_row gt_center" style="color: #007A33;">0.817</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; color: #007A33;">5.2</td>
+<td class="gt_row gt_center" style="color: #007A33;">-1.1</td>
+<td class="gt_row gt_center" style="color: #007A33;">3.0</td>
+<td class="gt_row gt_center" style="color: #007A33;">2.8</td>
+<td class="gt_row gt_center" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; color: #007A33;">2.83</td></tr>
+    <tr><td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">2016-17</td>
+<td class="gt_row gt_left gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">Golden State Warriors</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">67</td>
+<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">15</td>
+<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">0.817</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; font-style: oblique; font-weight: bolder; color: #FFC72C;">7.7</td>
+<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">0.3</td>
+<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">-2.3</td>
+<td class="gt_row gt_center gt_striped" style="border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">0.6</td>
+<td class="gt_row gt_center gt_striped" style="border-left-width: 2px; border-left-style: solid; border-left-color: black; border-right-width: 2px; border-right-style: solid; border-right-color: black; border-bottom-width: 2px; border-bottom-style: solid; border-bottom-color: black; color: #FFC72C;">2.78</td></tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" colspan="10"><strong>By:</strong> Ethan Peterson  |  <strong>Source:</strong> <a href="https://www.basketball-reference.com/leagues/">Basketball-Reference</a></td>
+    </tr>
+  </tfoot>
+  
+</table>
+</div>
+<p>Dean Oliver’s theory worked well within the Bulls system. The 1995-96 Jordan-led team ended the season on a then-record 72 wins. Their Net TOV% of 3.0 was highest in the top 10, and a Net ORB% of 8.0 was good for 1st all time, dating back to the 1979-80 championship team. The 1998-99 Spurs excelled at getting to the FT line, and the 2016-17 Warriors shot an impressive 7.7% Net eFG% (1st all time).</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+

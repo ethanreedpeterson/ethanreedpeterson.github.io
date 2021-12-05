@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">16 min read</span>
+    <span class="article-duration">15 min read</span>
     
 
     <h1 class="article-title">Three NBA trends to follow</h1>
@@ -146,12 +146,13 @@ threepoint %&gt;%
     panel.grid.minor = element_blank()
     )</code></pre>
 <p><img src="/2021/11/30/three-nba-trends-to-follow/index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
-After being LAST in 2014-15 (14.9 3PA/game), Minnesota is FIRST this season (42.9 3PA/game) – a <strong>287% increase</strong>!</p>
-<p>Golden State, known for 3-point shooting, was only first in the league once (2015-16). Other seasons they’ve been near the top or buried in the middle. Klay and Steph’s injuries in 2019-20 understandably hurt their production.</p>
-<p>The Rockets, on the other hand, were first in the league in five out of the eight seasons. James Harden’s time in H-town led to an absolutely insane amount of shots taken from behind the arc. The Rockets set an unfathomable record 45 3PA/game in back-to-back seasons. With Harden now gone, their attempts have been slashed.</p>
-<p>On to player 3-point shooting. The NBA’s young talent saw the surge in 3-point shooting and wanted to emulate that. In NBA history, there’s been 11 rookies who’ve logged 400+ 3PA. Eight of them debuted after Curry’s rookie season (2009-10). The Curry effect? Possibly. I’ll focus on this season’s rookie 3PA leader, Jalen Green, and compare him to the current rookie top 5 for total 3PA.</p>
+After being 30th in 2014-15 (14.9 3PA/game), Minnesota is 1st this season (42.9 3PA/game) – a <strong>287% increase</strong>!</p>
+<p>Golden State, was always towards the top, but Klay and Steph’s injuries in 2019-20 understandably hurt their production.</p>
+<p>The Rockets, finished 1st in five of the last seven seasons. James Harden’s time in H-town led to an absolutely insane amount of shots taken from behind the arc. The Rockets set an unfathomable record 45 3PA/game in back-to-back seasons. With Harden now gone, their attempts have been slashed.</p>
+<p>On to player 3-point shooting. The NBA’s young talent has noticeably modeled their game around the 3-point shot. In NBA history, 11 rookies have logged 400+ 3PA. Eight of them debuted after Curry’s rookie season. The Curry effect? Possibly.</p>
+<p>Cade Cunningham, currently second in total 3PA and first in 3PA/game for rookies, will be compared to the current rookies in the top 5 for total 3PA. Despite being second in total 3PA right now, he is on a better trajectory to attempt more threes.</p>
 <pre class="r"><code>rookies &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/nbathreepoint.csv&quot;) </code></pre>
-<p>The current rookie record is held by Donovan Mitchell (550 3PA). As of December 4, 2021, Cade Cunningham is 2nd among rookies with 122 3PA in 18 games (Chris Duarte is 1st, with 126 3PA, but he’s played six more games than Cunningham, a very small margin). Is he on pace to pass Mitchell’s record?</p>
+<p>The current rookie record is held by Donovan Mitchell (550 3PA). As of December 5, 2021, Cade Cunningham is 2nd among rookies with 122 3PA in 18 games (Chris Duarte is 1st. but is averaging 5.5 3PA to Cunningham’s 7.2). Is he on pace to pass Mitchell’s record?</p>
 <pre class="r"><code>cade &lt;- rookies %&gt;%
   filter(Player == &quot;Cade Cunningham&quot;) %&gt;% 
   group_by(Player) %&gt;% 
@@ -190,7 +191,7 @@ young &lt;- rookies %&gt;%
   geom_step(data = young, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#C1D32F&quot;, alpha = 0.4) +
   geom_step(data = cade, aes(x = G, y = CumThreePoint, group = Player), color = &quot;#1D42BA&quot;, alpha = 1) +
 #Player labels  
-  geom_text(aes(x = 10.5, y = 95), label = &quot;Cade Cunningham&quot;, color = &quot;#1D42BA&quot;, size = 3, alpha = 1, angle = 29) +
+  geom_text(aes(x = 10.5, y = 95), label = &quot;Cade Cunningham&quot;, color = &quot;#1D42BA&quot;, size = 3, alpha = 1, angle = 33) +
   geom_text(aes(x = 78.5, y = 560), label = &quot;Donovan Mitchell&quot;, color = &quot;#00471B&quot;, size = 3, alpha = 0.6) +
   geom_text(aes(x = 35, y = 160), label = &quot;Trae Young&quot;, color = &quot;#C1D32F&quot;, size = 3, alpha = 0.5, angle = 14) +
   geom_text(aes(x = 43, y = 305), label = &quot;Anthony Edwards&quot;, color = &quot;#78BE20&quot;, size = 3, alpha = 0.5, angle = 34) +
@@ -213,16 +214,15 @@ young &lt;- rookies %&gt;%
     panel.grid.minor = element_blank()
     )</code></pre>
 <p><img src="/2021/11/30/three-nba-trends-to-follow/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
-Cunningham is easily on pace to beat Donovan Mitchell. His 122 3PA is ahead of Mitchell’s 97 3PA through 18 games. His 3-point percentage is amendable, though (29%). The current top 5 rookies all shot above 32%.</p>
-<p>Final metric, how do basketball teams win games? Dean Oliver identified what he called the “Four Factors of Basketball Success.” Shooting, turnovers, rebounding, and free throws. He weighted them in order of importance: shooting (40%), turnovers (25%), rebounding (20%), and free throws (15%).</p>
+Cunningham is evidently on pace to beat Donovan Mitchell. Through 17 games, his 122 3PA is ahead of Mitchell’s 97. His 3P% is amendable, though (29%). The current top 5 rookies all shot above 32%.</p>
+<p>Final metric, how do basketball teams win games? <a href="https://www.basketball-reference.com/about/factors.html">Dean Oliver</a> identified what he called the “Four Factors of Basketball Success.” Shooting, turnovers, rebounding, and free throws. He weighted them in order of importance: shooting (40%), turnovers (25%), rebounding (20%), and free throws (15%).</p>
 <p>Shooting is measured with Effective Field Goal Percentage (eFG%), turnovers: Turnover Percentage (TOV%), rebounding: Offensive and Defensive Rebound Percentage (ORB% and DRB%), and free throws by how often a team gets to the line and how often they make them – Free Throws per Field Goal Attempt (FT/FGA).</p>
-<p>Because basketball is an offensive &amp; defensive game, Oliver’s theory can include up to eight factors. Our data has season stats of every NBA championship team since the 1979-80 season (when TOV% was first implemented). I’ll be selecting only the needed stats.</p>
+<p>Oliver’s theory can include up to eight factors (offense &amp; defense metrics). I’ll look at season stats of every NBA championship team since the 1979-80 season 3and select the four (technically eight) factors.</p>
 <pre class="r"><code>champs &lt;- read_csv(&quot;~/Desktop/SPMC 350 Files/homework/data/champs.csv&quot;)
 
 champs &lt;- champs %&gt;%
   select(Season, Team, W, L, Pct, `eFG%`, `TOV%`, `ORB%`, FT_FGA, `OppeFG%`, `OppTOV%`, `OppORB%`, OppFT_FGA)</code></pre>
-<p>A table is how I’ll showcase the top 10 Finals champs based on Dean Oliver’s success factors. I’m going to mutate and multiply the eight factors by 100 so I have a readable percentage. Then mutate a net value for each category (Net eFG%, Net TOV%, Net ORB%, and Net FT_FGA). This is so we can accurately see if the teams out-performed their opponents in each category.
-Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes each net value and multiplies it by its respective weight that Oliver listed, then adding them together.</p>
+<p>A table is how I’ll showcase the top 10 Finals champs based on Dean Oliver’s success factors. I’m going to mutate and multiply the eight factors by 100 so I have a readable percentage. Then mutate a net value for each category (Net eFG%, Net TOV%, Net ORB%, and Net FT_FGA). This is so we can accurately see if the teams out-performed their opponents in each category. Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes each net value and multiplies it by its respective weight that Oliver listed, then adding them together.</p>
 <pre class="r"><code>champs %&gt;%
   mutate(
     `eFG%` = (`eFG%` * 100),           #shifting decimal point so its on a 1-100 scale
@@ -401,12 +401,12 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
     locations = cells_body(
       rows = Team == &quot;Golden State Warriors&quot;)
     )</code></pre>
-<div id="ilgjovayyq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="uckrzzrctv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ilgjovayyq .gt_table {
+#uckrzzrctv .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -431,7 +431,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-left-color: #D3D3D3;
 }
 
-#ilgjovayyq .gt_heading {
+#uckrzzrctv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -443,7 +443,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#ilgjovayyq .gt_title {
+#uckrzzrctv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -453,7 +453,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-bottom-width: 0;
 }
 
-#ilgjovayyq .gt_subtitle {
+#uckrzzrctv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -463,13 +463,13 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-top-width: 0;
 }
 
-#ilgjovayyq .gt_bottom_border {
+#uckrzzrctv .gt_bottom_border {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ilgjovayyq .gt_col_headings {
+#uckrzzrctv .gt_col_headings {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -484,7 +484,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#ilgjovayyq .gt_col_heading {
+#uckrzzrctv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -504,7 +504,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   overflow-x: hidden;
 }
 
-#ilgjovayyq .gt_column_spanner_outer {
+#uckrzzrctv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -516,15 +516,15 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-right: 4px;
 }
 
-#ilgjovayyq .gt_column_spanner_outer:first-child {
+#uckrzzrctv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ilgjovayyq .gt_column_spanner_outer:last-child {
+#uckrzzrctv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ilgjovayyq .gt_column_spanner {
+#uckrzzrctv .gt_column_spanner {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -536,7 +536,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   width: 100%;
 }
 
-#ilgjovayyq .gt_group_heading {
+#uckrzzrctv .gt_group_heading {
   padding: 8px;
   color: #333333;
   background-color: #FFFFFF;
@@ -558,7 +558,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   vertical-align: middle;
 }
 
-#ilgjovayyq .gt_empty_group_heading {
+#uckrzzrctv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -573,15 +573,15 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   vertical-align: middle;
 }
 
-#ilgjovayyq .gt_from_md > :first-child {
+#uckrzzrctv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ilgjovayyq .gt_from_md > :last-child {
+#uckrzzrctv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ilgjovayyq .gt_row {
+#uckrzzrctv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -600,7 +600,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   overflow-x: hidden;
 }
 
-#ilgjovayyq .gt_stub {
+#uckrzzrctv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -612,7 +612,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-left: 12px;
 }
 
-#ilgjovayyq .gt_summary_row {
+#uckrzzrctv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -622,7 +622,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-right: 5px;
 }
 
-#ilgjovayyq .gt_first_summary_row {
+#uckrzzrctv .gt_first_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -632,7 +632,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-top-color: #D3D3D3;
 }
 
-#ilgjovayyq .gt_grand_summary_row {
+#uckrzzrctv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -642,7 +642,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   padding-right: 5px;
 }
 
-#ilgjovayyq .gt_first_grand_summary_row {
+#uckrzzrctv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -652,11 +652,11 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-top-color: #D3D3D3;
 }
 
-#ilgjovayyq .gt_striped {
+#uckrzzrctv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ilgjovayyq .gt_table_body {
+#uckrzzrctv .gt_table_body {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -665,7 +665,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-bottom-color: #D3D3D3;
 }
 
-#ilgjovayyq .gt_footnotes {
+#uckrzzrctv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -679,13 +679,13 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#ilgjovayyq .gt_footnote {
+#uckrzzrctv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding: 4px;
 }
 
-#ilgjovayyq .gt_sourcenotes {
+#uckrzzrctv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -699,41 +699,41 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   border-right-color: #D3D3D3;
 }
 
-#ilgjovayyq .gt_sourcenote {
+#uckrzzrctv .gt_sourcenote {
   font-size: 90%;
   padding: 4px;
 }
 
-#ilgjovayyq .gt_left {
+#uckrzzrctv .gt_left {
   text-align: left;
 }
 
-#ilgjovayyq .gt_center {
+#uckrzzrctv .gt_center {
   text-align: center;
 }
 
-#ilgjovayyq .gt_right {
+#uckrzzrctv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ilgjovayyq .gt_font_normal {
+#uckrzzrctv .gt_font_normal {
   font-weight: normal;
 }
 
-#ilgjovayyq .gt_font_bold {
+#uckrzzrctv .gt_font_bold {
   font-weight: bold;
 }
 
-#ilgjovayyq .gt_font_italic {
+#uckrzzrctv .gt_font_italic {
   font-style: italic;
 }
 
-#ilgjovayyq .gt_super {
+#uckrzzrctv .gt_super {
   font-size: 65%;
 }
 
-#ilgjovayyq .gt_footnote_marks {
+#uckrzzrctv .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 65%;
@@ -872,7 +872,7 @@ Lastly, mutating the final metric, <strong>FourFactorScore</strong>, which takes
   
 </table>
 </div>
-<p>The Bulls exemplified how to win basketball via Dean Oliver’s theory. The 1995-96 Jordan-led team ended the season on a then-record 72 wins. Their Net TOV% of 3.0 was highest in the top 10, and a Net ORB% of 8.0 was good for 1st all time, dating back to the 1979-80 championship team. The 1998-99 Spurs excelled at getting to the FT line compared to their opponents, and the 2016-17 Warriors shot an impressive 7.7% Net eFG% (good for 1st all time).</p>
+<p>Dean Oliver’s theory worked well within the Bulls system. The 1995-96 Jordan-led team ended the season on a then-record 72 wins. Their Net TOV% of 3.0 was highest in the top 10, and a Net ORB% of 8.0 was good for 1st all time, dating back to the 1979-80 championship team. The 1998-99 Spurs excelled at getting to the FT line, and the 2016-17 Warriors shot an impressive 7.7% Net eFG% (1st all time).</p>
 
     </div>
   </article>

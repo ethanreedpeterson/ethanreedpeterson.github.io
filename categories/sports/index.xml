@@ -5,7 +5,17 @@
     <link>/categories/sports/</link>
     <description>Recent content in sports on Ethan Peterson&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sun, 05 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/sports/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 26 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/sports/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Predicting March Madness with a Model is Hard</title>
+      <link>/2022/03/26/predicting-march-madness-with-a-model-is-hard/</link>
+      <pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/03/26/predicting-march-madness-with-a-model-is-hard/</guid>
+      <description>This spring, our SPMC 460 class was tasked with creating a machine learning model to predict the outcome of the Men’s March Madness tournament. We had multiple options of models to choose from: logistic regression, random forest, XGBoost, and support vector machines. I elected to go with a support vector machine (SVM), simply because it seemed like it would work the best for me.
+Part of creating the learning model is using self-picked predictors.</description>
+    </item>
+    
     <item>
       <title>Three NBA trends to follow</title>
       <link>/2021/12/05/three-nba-trends-to-follow/</link>

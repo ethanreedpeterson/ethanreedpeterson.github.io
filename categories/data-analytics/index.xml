@@ -5,14 +5,24 @@
     <link>/categories/data-analytics/</link>
     <description>Recent content in Data analytics on Ethan Peterson&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 06 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/data-analytics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 26 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/data-analytics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Predicting March Madness with a Model is Hard</title>
+      <link>/2022/03/26/predicting-march-madness-with-a-model-is-hard/</link>
+      <pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/03/26/predicting-march-madness-with-a-model-is-hard/</guid>
+      <description>This spring, our SPMC 460 class was tasked with creating a machine learning model to predict the outcome of the Men’s March Madness tournament. We had multiple options of models to choose from: logistic regression, random forest, XGBoost, and support vector machines. I elected to go with a support vector machine (SVM), simply because it seemed like it would work the best for me.
+Part of creating the learning model is using self-picked predictors.</description>
+    </item>
+    
     <item>
       <title>Decadal GOATs of the NBA</title>
       <link>/2021/12/06/decadal-goats-of-the-nba/</link>
       <pubDate>Mon, 06 Dec 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/12/06/decadal-goats-of-the-nba/</guid>
-      <description>Test Test Test</description>
+      <description>&#34;The First true basketball game as we know it was on January 20th, 1892 in Springfield, Massachusetts. Canadian Doctor James Naismith invented the game for the YMCA to play during the winter months. Naismith wrote simple rules for the game, and nailed up two peach baskets for hoops, most of original Naismith rules are still in place today. Some of the rules have changed a bit, and new rules have been added since then, such as in the original game bouncing the ball was prohibited.</description>
     </item>
     
     <item>

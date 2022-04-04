@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Predicting March Madness with a Model is Hard</h1>
@@ -73,9 +73,12 @@
 
 <p>This spring, our SPMC 460 class was tasked with creating a machine learning model to predict the outcome of the Men’s March Madness tournament. We had multiple options of models to choose from: logistic regression, random forest, XGBoost, and support vector machines. I elected to go with a support vector machine (SVM), simply because it seemed like it would work the best for me.</p>
 <p>Part of creating the learning model is using self-picked predictors. We could use just about any statistic in basketball that we could find. We used data from hoopR’s library of team box scores and kenpom. The team and opponent predictors I chose for my model was points per possession, true shooting percentage, free throw rate, ORB%, DRB%, offensive &amp; defensive efficiency, and simple rating system (SRS). Used against my testing data from games dating back to2015, my model ran a 74% testing accuracy. I naively believed that these would be great predictors that would result in a good outcome for my bracket. <strong>Boy was I wrong.</strong></p>
-<p>Let’s take a look at my bracket. My Final Four is completely eliminated, so no need to wait for the tournament to finish.
-<img src="/Users/petey/Documents/spmc460/classfiles/cumulativemeanbracket.png" alt="Cumulative Mean Bracket" />
-As you can see, this model’s predictions were terrible.</p>
+<p>Let’s take a look at my bracket. My Final Four is completely eliminated, so no need to wait for the tournament to finish.</p>
+<p><img src="/Users/petey/Documents/spmc460/classfiles/cumulativemeanbracket.png" width="1263" /></p>
+<p>As you can see, this model’s predictions were terrible.</p>
+<p>It is incredibly difficult to predict a tournament of this size. my first model did rather well in the Big Ten tournament, as it predicted Iowa to beat Purdue in the Big Ten Championship game (which happened). But this was a different story. The levels of competition are much more varied, and, it <strong>is</strong> March Madness. Crazy stuff does happen.</p>
+<p>My biggest misses was my entire Final Four. Iowa and Illinois specifically. The B1G performed terribly this tournament, with no teams making the Elite 8. My model seemed to heavily favor Big Ten teams. Three B1G teams in the Elite 8, with two moving on to the Final Four and one in the Championship.</p>
+<p>Let’s take a look by section.</p>
 
     </div>
   </article>

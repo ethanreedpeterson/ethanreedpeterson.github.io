@@ -5,17 +5,7 @@
     <link>/</link>
     <description>Recent content on Ethan Peterson&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Sat, 26 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Predicting March Madness with a Model is Hard</title>
-      <link>/2022/03/26/predicting-march-madness-with-a-model-is-hard/</link>
-      <pubDate>Sat, 26 Mar 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/2022/03/26/predicting-march-madness-with-a-model-is-hard/</guid>
-      <description>This spring, our SPMC 460 class was tasked with creating a machine learning model to predict the outcome of the Men’s March Madness tournament. We had multiple options of models to choose from: logistic regression, random forest, XGBoost, and support vector machines. I elected to go with a support vector machine (SVM), simply because it seemed like it would work the best for me.
-## Setting default kernel parameters ## line search fails -1.</description>
-    </item>
-    
+    <lastBuildDate>Thu, 10 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Search for the Best Worst NBA Team of All Time</title>
       <link>/2022/02/10/search-for-the-best-worst-nba-team-of-all-time/</link>

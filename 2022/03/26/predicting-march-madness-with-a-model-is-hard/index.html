@@ -22,6 +22,11 @@
 
 
 
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
 <link rel="stylesheet" href="/css/fonts.css" media="all">
 <link rel="stylesheet" href="/css/main.css" media="all">
 
@@ -57,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">2 min read</span>
+    <span class="article-duration">5 min read</span>
     
 
     <h1 class="article-title">Predicting March Madness with a Model is Hard</h1>
@@ -72,13 +77,412 @@
 
 
 <p>This spring, our SPMC 460 class was tasked with creating a machine learning model to predict the outcome of the Men’s March Madness tournament. We had multiple options of models to choose from: logistic regression, random forest, XGBoost, and support vector machines. I elected to go with a support vector machine (SVM), simply because it seemed like it would work the best for me.</p>
-<p>Part of creating the learning model is using self-picked predictors. We could use just about any statistic in basketball that we could find. We used data from hoopR’s library of team box scores and kenpom. The team and opponent predictors I chose for my model was points per possession, true shooting percentage, free throw rate, ORB%, DRB%, offensive &amp; defensive efficiency, and simple rating system (SRS). Used against my testing data from games dating back to2015, my model ran a 74% testing accuracy. I naively believed that these would be great predictors that would result in a good outcome for my bracket. <strong>Boy was I wrong.</strong></p>
-<p>Let’s take a look at my bracket. My Final Four is completely eliminated, so no need to wait for the tournament to finish.</p>
-<p><img src="/Users/petey/Documents/spmc460/classfiles/cumulativemeanbracket.png" width="1263" /></p>
-<p>As you can see, this model’s predictions were terrible.</p>
-<p>It is incredibly difficult to predict a tournament of this size. my first model did rather well in the Big Ten tournament, as it predicted Iowa to beat Purdue in the Big Ten Championship game (which happened). But this was a different story. The levels of competition are much more varied, and, it <strong>is</strong> March Madness. Crazy stuff does happen.</p>
-<p>My biggest misses was my entire Final Four. Iowa and Illinois specifically. The B1G performed terribly this tournament, with no teams making the Elite 8. My model seemed to heavily favor Big Ten teams. Three B1G teams in the Elite 8, with two moving on to the Final Four and one in the Championship.</p>
-<p>Let’s take a look by section.</p>
+<pre><code>##  Setting default kernel parameters  
+## line search fails -1.135902 -0.004858116 4.541961e-05 -2.944535e-09 -5.253353e-09 -3.171963e-11 -2.386051e-13</code></pre>
+<p>Part of creating the learning model is using self-picked predictors. We could use just about any statistic in basketball that we could find. We used data from hoopR’s library of team box scores and kenpom. The team and opponent predictors I chose for my model was points per possession, true shooting percentage, free throw rate, ORB%, DRB%, offensive &amp; defensive efficiency, and simple rating system (SRS).</p>
+<div id="vqaadtubbs" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#vqaadtubbs .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: none;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#vqaadtubbs .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vqaadtubbs .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#vqaadtubbs .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#vqaadtubbs .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vqaadtubbs .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vqaadtubbs .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#vqaadtubbs .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#vqaadtubbs .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#vqaadtubbs .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#vqaadtubbs .gt_column_spanner {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#vqaadtubbs .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vqaadtubbs .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vqaadtubbs .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#vqaadtubbs .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#vqaadtubbs .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: none;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#vqaadtubbs .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#vqaadtubbs .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vqaadtubbs .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#vqaadtubbs .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vqaadtubbs .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#vqaadtubbs .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#vqaadtubbs .gt_table_body {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vqaadtubbs .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vqaadtubbs .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#vqaadtubbs .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vqaadtubbs .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#vqaadtubbs .gt_left {
+  text-align: left;
+}
+
+#vqaadtubbs .gt_center {
+  text-align: center;
+}
+
+#vqaadtubbs .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#vqaadtubbs .gt_font_normal {
+  font-weight: normal;
+}
+
+#vqaadtubbs .gt_font_bold {
+  font-weight: bold;
+}
+
+#vqaadtubbs .gt_font_italic {
+  font-style: italic;
+}
+
+#vqaadtubbs .gt_super {
+  font-size: 65%;
+}
+
+#vqaadtubbs .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  <thead class="gt_header">
+    <tr>
+      <th colspan="2" class="gt_heading gt_title gt_font_normal" style="color: #000000; text-align: left; font-weight: bold;">My Predictors</th>
+    </tr>
+    <tr>
+      <th colspan="2" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border" style="color: #000000; text-align: left;">The "thought-to-be perfect" predictors.</th>
+    </tr>
+  </thead>
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">variable</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: #000000; font-size: 12; font-weight: bold;">role</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">team_cm_points_per_possession</td>
+<td class="gt_row gt_left">predictor</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">team_cm_true_shooting_percentage</td>
+<td class="gt_row gt_left gt_striped">predictor</td></tr>
+    <tr><td class="gt_row gt_left">team_cm_free_throw_rate</td>
+<td class="gt_row gt_left">predictor</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">team_cm_orb_percentage</td>
+<td class="gt_row gt_left gt_striped">predictor</td></tr>
+    <tr><td class="gt_row gt_left">team_cm_steal_turnover_ratio</td>
+<td class="gt_row gt_left">predictor</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">team_cm_offensive_efficiency</td>
+<td class="gt_row gt_left gt_striped">predictor</td></tr>
+    <tr><td class="gt_row gt_left">team_cm_defensive_efficiency</td>
+<td class="gt_row gt_left">predictor</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">team_srs</td>
+<td class="gt_row gt_left gt_striped">predictor</td></tr>
+    <tr><td class="gt_row gt_left">opponent_cm_points_per_possession</td>
+<td class="gt_row gt_left">predictor</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">opponent_cm_true_shooting_percentage</td>
+<td class="gt_row gt_left gt_striped">predictor</td></tr>
+    <tr><td class="gt_row gt_left">opponent_cm_free_throw_rate</td>
+<td class="gt_row gt_left">predictor</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">opponent_cm_orb_percentage</td>
+<td class="gt_row gt_left gt_striped">predictor</td></tr>
+    <tr><td class="gt_row gt_left">opponent_cm_steal_turnover_ratio</td>
+<td class="gt_row gt_left">predictor</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">opponent_cm_offensive_efficiency</td>
+<td class="gt_row gt_left gt_striped">predictor</td></tr>
+    <tr><td class="gt_row gt_left">opponent_cm_defensive_efficiency</td>
+<td class="gt_row gt_left">predictor</td></tr>
+    <tr><td class="gt_row gt_left gt_striped">opponent_srs</td>
+<td class="gt_row gt_left gt_striped">predictor</td></tr>
+    <tr><td class="gt_row gt_left">TeamResult</td>
+<td class="gt_row gt_left">outcome</td></tr>
+  </tbody>
+  <tfoot class="gt_sourcenotes">
+    <tr>
+      <td class="gt_sourcenote" colspan="2"><strong>By:</strong> Ethan Peterson</td>
+    </tr>
+  </tfoot>
+  
+</table>
+</div>
+<p>Used against my testing data from games dating back to2015, my model ran a 74% testing accuracy. I naively believed that these would be great predictors that would result in a good outcome for my bracket. <strong>Boy was I wrong.</strong></p>
+<p>Let’s take a look at my bracket. My Final Four is completely eliminated so no need to wait for the tournament to finish.</p>
+<p><img src="images/cumulativemeanbracket.png" alt="My Bracket" />
+As you can see, this model’s predictions were pretty terrible.</p>
+<p>It is incredibly difficult to predict a tournament of this size. my first model did rather well in the Big Ten tournament, as it predicted Iowa to beat Purdue in the Big Ten Championship game (which happened). But this was a different story. The levels of competition are much more varied, and it <strong>is</strong> March Madness. Crazy stuff happens.</p>
+<p>My biggest miss was my entire Final Four. Iowa and Illinois specifically. The B1G performed terribly this tournament, with no teams making the Elite 8. My model seemed to heavily favor Big Ten teams. Three B1G teams in the Elite 8, with two moving on to the Final Four and one in the Championship.</p>
 
     </div>
   </article>
@@ -101,6 +505,18 @@
 
     </div>
     
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
 
     
 

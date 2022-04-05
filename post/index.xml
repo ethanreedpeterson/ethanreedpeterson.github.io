@@ -13,7 +13,7 @@
       
       <guid>/2022/03/26/predicting-march-madness-with-a-model-is-hard/</guid>
       <description>This spring, our SPMC 460 class was tasked with creating a machine learning model to predict the outcome of the Men’s March Madness tournament. We had multiple options of models to choose from: logistic regression, random forest, XGBoost, and support vector machines. I elected to go with a support vector machine (SVM), simply because it seemed like it would work the best for me.
-Part of creating the learning model is using self-picked predictors.</description>
+## Setting default kernel parameters ## line search fails -1.</description>
     </item>
     
     <item>

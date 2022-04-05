@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>/</loc>
+    <lastmod>2022-03-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/post/</loc>
+    <lastmod>2022-03-26T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/2022/03/26/predicting-march-madness-with-a-model-is-hard/</loc>
+    <lastmod>2022-03-26T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/tags/basketball/</loc>
     <lastmod>2022-02-10T00:00:00+00:00</lastmod>
   </url><url>
@@ -11,16 +20,10 @@
     <loc>/tags/data-analytics/</loc>
     <lastmod>2022-02-10T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/</loc>
-    <lastmod>2022-02-10T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/tags/nba/</loc>
     <lastmod>2022-02-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/categories/nba/</loc>
-    <lastmod>2022-02-10T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/post/</loc>
     <lastmod>2022-02-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/2022/02/10/search-for-the-best-worst-nba-team-of-all-time/</loc>

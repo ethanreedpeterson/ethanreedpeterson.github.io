@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">5 min read</span>
+    <span class="article-duration">8 min read</span>
     
 
     <h1 class="article-title">Predicting March Madness with a Model is Hard</h1>
@@ -79,7 +79,7 @@
 <p>This spring, our SPMC 460 class was tasked with creating a machine learning model to predict the outcome of the Men’s March Madness tournament. We had multiple options of models to choose from: logistic regression, random forest, XGBoost, and support vector machines. I elected to go with a support vector machine (SVM), simply because it seemed like it would work the best for me.</p>
 <pre><code>##  Setting default kernel parameters  
 ## line search fails -1.135902 -0.004858116 4.541961e-05 -2.944535e-09 -5.253353e-09 -3.171963e-11 -2.386051e-13</code></pre>
-<p>Part of creating the learning model is using self-picked predictors. We could use just about any statistic in basketball that we could find. We used data from hoopR’s library of team box scores and kenpom. The team and opponent predictors I chose for my model was points per possession, true shooting percentage, free throw rate, ORB%, DRB%, offensive &amp; defensive efficiency, and simple rating system (SRS).</p>
+<p>Part of creating the learning model is using self-picked predictors. We could use just about any statistic in basketball that we could find. We used data from hoopR’s library of team box scores and kenpom. The predictors I decided upon are below:</p>
 <div id="vqaadtubbs" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
@@ -477,12 +477,29 @@
   
 </table>
 </div>
-<p>Used against my testing data from games dating back to2015, my model ran a 74% testing accuracy. I naively believed that these would be great predictors that would result in a good outcome for my bracket. <strong>Boy was I wrong.</strong></p>
+<p>Used against my testing data from games dating back to 2015, my model ran a 74% testing accuracy. I naively believed that these would be great predictors that would result in a good outcome for my bracket (hindsight is 20/20 for a reason). <strong>Boy was I wrong.</strong></p>
 <p>Let’s take a look at my bracket. My Final Four is completely eliminated so no need to wait for the tournament to finish.</p>
 <p><img src="images/cumulativemeanbracket.png" alt="My Bracket" />
 As you can see, this model’s predictions were pretty terrible.</p>
 <p>It is incredibly difficult to predict a tournament of this size. my first model did rather well in the Big Ten tournament, as it predicted Iowa to beat Purdue in the Big Ten Championship game (which happened). But this was a different story. The levels of competition are much more varied, and it <strong>is</strong> March Madness. Crazy stuff happens.</p>
 <p>My biggest miss was my entire Final Four. Iowa and Illinois specifically. The B1G performed terribly this tournament, with no teams making the Elite 8. My model seemed to heavily favor Big Ten teams. Three B1G teams in the Elite 8, with two moving on to the Final Four and one in the Championship.</p>
+<p>Let’s take a look at each regional bracket and where it went wrong. Firstly, the West regional:
+<img src="images/westbracket.png" alt="West Bracket" />
+I performed rather well in the R64, only missing New Mexico State’s upset against UConn and Alabama losing to Notre Dame. NMSU’s upset wasn’t brutal to my bracket, as UConn was slated to lose next round. But Alabama losing really crushed my West regional, as I had them facing Gonzaga in the Elite 8. Speaking of Gonzaga, they were my model’s national champion. But, as we all know, Arkansas blew up that dream, and we’re left 0/2 on the West regional Elite 8, with Arkansas and Duke reaching it instead.</p>
+<p><img src="images/southbracket.png" alt="South Bracket" />
+My South bracket was almost more important and critical for the model’s success as I needed 4-seed Illinois to reach not only the Final Four, but the championship game vs. Gonzaga. That didn’t happen, as Illinois was “upset” by Houston in the R32. I also needed Michigan to reach the Elite 8 as well, but got beat by Villanova in the Sweet 16. I’m not sure what my model saw in both Illinoi and Michigan, but, once again, I ended up 0/2 in the Elite 8 out of the South regional.</p>
+<p><img src="images/eastbracket.png" alt="East Bracket" />
+I can only laugh off the outcome of the East regional. My model’s biggest mishap was Baylor reaching the Final Four, only for them to be upset by now-champion UNC in the R32. My model didn’t predict (or perhaps even consider the possibility of) Saint Peter’s heroic upset on Kentucky and subsequent run to the Elite 8. That’s part of the magic and madness that is March Madness. I had Texas also reaching the Elite 8 facing Baylor, but they were upset by Purdue in the R32. Again, 0/2 in the Elite 8 for the East regional.</p>
+<div class="figure">
+<img src="images/midwestbracket.png" alt="" />
+<p class="caption">Midwest Bracket</p>
+</div>
+<p>This was the bracket that ultimately ruined my March Madness experience. 5-seed Iowa was upset by 12-seed Richmond in the R64, and Iowa was my model’s Final Four pick. My model also saw something in USC. Having them upset 2-seed Auburn and 3-seed Wisconsin later on down the road. Alas, they themselves were upset by 10-seed Miami in the R64. Ergo, no Iowa-USC matchup, meaning my model went a perfect 4/4 on going 0/2 on Elite 8 matchups.</p>
+<p>In the end, my model didn’t do great compared to the rest of the world’s brackets (see below).</p>
+<p><img src="images/statsbracket.png" alt="Stats Bracket" />
+See that “Game Over” status? They could have put that there after the Round of 32. I didn’t garner a single point once the Sweet 16 started. A whopping 9% success rate compared to my 74% test result accuracy is preposterously bad. How can I improve upon this?</p>
+<p>I’m sure I wouldn’t have to do much to have better success. I believe ORB%, DRB%, and free throw rate were okay factors, but I they might have been too marginal. Perhaps I should go more basic and broad, like a logistic regression looking at just field goal percentage and opponent field goal percentage. Maybe that would’ve been better.</p>
+<p>There’s a ton of different routes I could go. But I’m excited for next year, because I am definitely going to do this again.</p>
 
     </div>
   </article>

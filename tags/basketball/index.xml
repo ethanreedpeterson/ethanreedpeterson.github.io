@@ -12,9 +12,8 @@
       <pubDate>Mon, 25 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>/2022/04/25/predicting-nba-games-with-a-model-proves-challenging/</guid>
-      <description>Explaining methods, features of the model, and algorithm here.
-–
-When it came to deciding whether or not we wanted to go with the model’s choice of who would win or not for our bets, we tended to rely more on who we felt would win the games over the model’s choice instead. The model doesn’t know who is playing, momentum, and other obscene and abstract factors that we can’t sum up and put into a model.</description>
+      <description>Our methods behind the predictors we used was pretty simple. In the NBA, it is all about offense. Defense isn’t as highly sought after for production, compared to a 3-point sharpshooter or athletic slasher. With that, we focused on offensive metrics (though we did sprinkle in some defensive metrics so it wasn’t completely one-sided).
+These were our metrics (all with a 3-game rolling window): - True shooting percentage - 3-point field goal percentage - Effective field goal percentage - Fast break points - Assist to turnover ratio - “Bleals” (blocks + steals)</description>
     </item>
     
     <item>

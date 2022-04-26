@@ -57,7 +57,7 @@
 
   <article class="article">
     
-    <span class="article-duration">1 min read</span>
+    <span class="article-duration">2 min read</span>
     
 
     <h1 class="article-title">Predicting NBA Games with a Model Proves Challenging </h1>
@@ -71,7 +71,15 @@
 <script src="/2022/04/25/predicting-nba-games-with-a-model-proves-challenging/index_files/header-attrs/header-attrs.js"></script>
 
 
-<p><strong>Explaining methods, features of the model, and algorithm here.</strong></p>
+<p>Our methods behind the predictors we used was pretty simple. In the NBA, it is all about offense. Defense isn’t as highly sought after for production, compared to a 3-point sharpshooter or athletic slasher. With that, we focused on offensive metrics (though we did sprinkle in some defensive metrics so it wasn’t completely one-sided).</p>
+<p>These were our metrics (all with a 3-game rolling window):
+- True shooting percentage
+- 3-point field goal percentage
+- Effective field goal percentage
+- Fast break points
+- Assist to turnover ratio
+- “Bleals” (blocks + steals)</p>
+<p>We believed 3-point shooting, especially, was going to be key as it’s becoming the common dominant quality in the league today. We also valued shooting efficiency, fast break points, AST/TO ratio, and for our defensive metrics we chose blocks and steals because those translate to a free possession for the team, which increases their odds of scoring while decreasing the opposing team’s odds of scoring.</p>
 <p>–</p>
 <p>When it came to deciding whether or not we wanted to go with the model’s choice of who would win or not for our bets, we tended to rely more on who <em>we</em> felt would win the games over the model’s choice instead. The model doesn’t know who is playing, momentum, and other obscene and abstract factors that we can’t sum up and put into a model. So a lot of it was, <em>“Well, the model says this, what do we think?”</em> and we’d decide from there. At the beginning, we knew the Mavericks weren’t a stone-cold lock because Luka Dončić was out for a couple of games. Collectively, our picks were based on the following questions. How has the team performed recently? Are their star players going to be playing at full speed? Does the model agree with how we’re feeling? And how big (or small) are the odds for each team?</p>
 <p><strong>How it went, our record, overall finishing position here.</strong></p>

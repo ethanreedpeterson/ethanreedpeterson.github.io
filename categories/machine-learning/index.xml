@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>machine learning on Ethan Peterson&#39;s Site</title>
+    <link>/categories/machine-learning/</link>
+    <description>Recent content in machine learning on Ethan Peterson&#39;s Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 25 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Predicting NBA Games with a Model Proves Challenging </title>
+      <link>/2022/04/25/predicting-nba-games-with-a-model-proves-challenging/</link>
+      <pubDate>Mon, 25 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/04/25/predicting-nba-games-with-a-model-proves-challenging/</guid>
+      <description>Explaining methods, features of the model, and algorithm here.
+–
+When it came to deciding whether or not we wanted to go with the model’s choice of who would win or not for our bets, we tended to rely more on who we felt would win the games over the model’s choice instead. The model doesn’t know who is playing, momentum, and other obscene and abstract factors that we can’t sum up and put into a model.</description>
+    </item>
+    
+  </channel>
+</rss>

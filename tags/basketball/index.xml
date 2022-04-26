@@ -5,7 +5,18 @@
     <link>/tags/basketball/</link>
     <description>Recent content in basketball on Ethan Peterson&#39;s Site</description>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 10 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/basketball/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 25 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/basketball/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Predicting NBA Games with a Model Proves Challenging </title>
+      <link>/2022/04/25/predicting-nba-games-with-a-model-proves-challenging/</link>
+      <pubDate>Mon, 25 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/04/25/predicting-nba-games-with-a-model-proves-challenging/</guid>
+      <description>Explaining methods, features of the model, and algorithm here.
+–
+When it came to deciding whether or not we wanted to go with the model’s choice of who would win or not for our bets, we tended to rely more on who we felt would win the games over the model’s choice instead. The model doesn’t know who is playing, momentum, and other obscene and abstract factors that we can’t sum up and put into a model.</description>
+    </item>
+    
     <item>
       <title>Search for the Best Worst NBA Team of All Time</title>
       <link>/2022/02/10/search-for-the-best-worst-nba-team-of-all-time/</link>

@@ -13,7 +13,8 @@
       
       <guid>/2022/04/25/predicting-nba-games-with-a-model-proves-challenging/</guid>
       <description>Our methods behind the predictors we used was pretty simple. In the NBA, it is all about offense. Defense isn’t as highly sought after for production, compared to a 3-point sharpshooter or athletic slasher. With that, we focused on offensive metrics (though we did sprinkle in some defensive metrics so it wasn’t completely one-sided).
-These were our metrics (all with a 3-game rolling window): - True shooting percentage - 3-point field goal percentage - Effective field goal percentage - Fast break points - Assist to turnover ratio - “Bleals” (blocks + steals)</description>
+These were our metrics (all with a 3-game rolling window):
+- True shooting percentage</description>
     </item>
     
   </channel>

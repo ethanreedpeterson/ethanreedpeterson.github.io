@@ -16,29 +16,20 @@
     </item>
     
     <item>
-      <title>NBA</title>
-      <link>/categories/nba/</link>
-      <pubDate>Thu, 10 Feb 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/categories/nba/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Data analytics</title>
       <link>/categories/data-analytics/</link>
-      <pubDate>Mon, 06 Dec 2021 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 05 Dec 2021 00:00:00 +0000</pubDate>
       
       <guid>/categories/data-analytics/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>R</title>
-      <link>/categories/r/</link>
-      <pubDate>Mon, 06 Dec 2021 00:00:00 +0000</pubDate>
+      <title>NBA</title>
+      <link>/categories/nba/</link>
+      <pubDate>Sun, 05 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>/categories/r/</guid>
+      <guid>/categories/nba/</guid>
       <description></description>
     </item>
     
@@ -48,6 +39,15 @@
       <pubDate>Sun, 05 Dec 2021 00:00:00 +0000</pubDate>
       
       <guid>/categories/sports/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R</title>
+      <link>/categories/r/</link>
+      <pubDate>Mon, 25 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/categories/r/</guid>
       <description></description>
     </item>
     
